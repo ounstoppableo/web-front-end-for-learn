@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../plug/bootstrap-3.4.1-dist/css/bootstrap.css">
+    <script src='../plug/jquery.js'></script>
+    <script src='../plug/template-web.js'></script>
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 发表评论模块 -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">发表评论</h3>
+        </div>
+        <form class="panel-body" id="formAddcmt">
+            <div>评论人:</div>
+            <input type="text" name="username" class="form-control" autocomplete="off">
+            <div>评论内容:</div>
+            <textarea type="text" name="content" class="form-control" autocomplete="off"></textarea>
+            <button type="submit" class="btn btn-primary">发表评论</button>
+        </form>
+    </div>
+
+    <!-- 评论区模块 -->
+
+    <ul class="list-group">
+        <!-- <li class="list-group-item">Item 1
+            <span class="badge" style="background-color: #f0ad4e;">评论时间:</span>
+            <span class="badge" style="background-color: #5bc0de;">评论人:</span>
+        </li> -->
+    </ul>
+
+    <script>
+        $(function () {
+            // 获取评论区数据函数
+            function getCmt() {
+                $.ajax({
+                    type: 'get',
+                    url: 'http://www.liulongbin.top:3006/api/cmtlist',
+                    success: res => {
+                        if (res.status === 200) {
+                            document.querySelector('.list-group').innerHTML = res.data.map(item => {
+                                const { content, time, username } = item
+                                return `
+                                <li class="list-group-item">${content}
+                                    <span class="badge" style="background-color: #f0ad4e;">评论时间:${time}</span>
+                                    <span class="badge" style="background-color: #5bc0de;">评论人:${username}</span>
+                                </li>
+                                `
+                            }).join('')
+                        }
+                    }
+                })
+            }
+            getCmt()
+
+            // 添加评论函数
+            function addCmt() {
+                let data = $('#formAddcmt').serialize()
+                document.querySelector('#formAddcmt').reset()
+                //由于serialize()方法进行了encodeURIComponent方法编码，所以这里打印data的话，你会看见中文乱码。//使用decodeURIComponent进行解码，中文即可正常显示。
+                data = decodeURIComponent(data)
+                const arr = data.split('&').map(item => item.substring(item.indexOf('=') + 1))
+                console.log(arr);
+                $.ajax({
+                    type: 'post',
+                    url: 'http://www.liulongbin.top:3006/api/addcmt',
+                    data: {
+                        username: arr[0],
+                        content: arr[1]
+                    },
+                    success: res => {
+                        if (res.status !== 201) {
+                            console.log(res.status);
+                            return alert(res.msg)
+                        }
+                        getCmt()
+                    }
+                })
+            }
+            document.querySelector('[type="submit"]').addEventListener('click', function (e) {
+                e.preventDefault()
+                addCmt()
+            })
+            document.querySelector('[name="content"]').addEventListener('keyup', function (e) {
+                e.preventDefault()
+                if (e.keyCode === 13) {
+                    addCmt()
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

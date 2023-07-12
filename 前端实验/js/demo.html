@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function Hero(name, type, blood, attack) {
+            this.name = name;
+            this.type = type;
+            this.blood = blood;
+            this.attack = attack;
+            this.sayHi = function() {
+                console.log('Hi~!');
+            }
+        }
+        var hy = new Hero('后裔','射手',300,'远程');
+        for(var k in hy) {
+            console.log(k);
+            console.log(hy[k]);
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

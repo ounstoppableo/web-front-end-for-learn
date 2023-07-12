@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../plug/bootstrap-3.4.1-dist/css/bootstrap.min.css">
+    <!-- <script src="./node_modules/axios/dist/axios.js"></script> -->
+    <script src="./myaxios.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h3>axios测试</h3>
+        <button type="button" class="btn btn-primary">发送get请求</button>
+        <button type="button" class="btn btn-danger">取消ajax请求</button>
+
+    </div>
+    <script>
+        const btns = document.querySelectorAll('button')
+        // axios.interceptors.request.use(function one(config) {
+        //     console.log('请求拦截器成功 --1')
+        //     return config
+        // }, function (error) { })
+        // axios.interceptors.request.use(function two(config) {
+        //     console.log('请求拦截器成功 --2')
+        //     return config
+        // }, function (error) { })
+        // axios.interceptors.response.use(function one(response) {
+        //     console.log('响应拦截器成功 --1')
+        //     return response
+        // }, function (error) { })
+        // axios.interceptors.response.use(function two(response) {
+        //     console.log('响应拦截器成功 --2')
+        //     return response
+        // }, function (error) { })
+        let cancel = null
+        btns[0].addEventListener('click', function () {
+            if(cancel) cancel()
+            axios({
+                url: 'http://localhost:3000/posts',
+                method: 'GET',
+                cancelToken: new Canceltoken(function(c){
+                    cancel = c
+                })
+            }).then(res => {
+                console.log(res);
+            })
+        })
+        btns[1].addEventListener('click',function(){
+            cancel()
+        })
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function count(str) {
+            var o = Object();
+            for (var i = 0; i < str.length; i++) {
+                if (o[str.charAt(i)]) {
+                    o[str.charAt(i)]++;
+                } else {
+                    o[str.charAt(i)] = 1;
+                }
+            }
+            return o;
+        }
+        var str='asdagfsfgsfadsdasfaseodjfg';
+        var o=count(str);
+        console.log(o);
+        var k='';
+        var max=0;
+        var finChar = '';
+        for(k in o){
+            if(o[k]>max){
+                max=o[k];
+                finChar = k;
+            }
+        }
+        console.log('出现次数最多的元素是：'+ finChar + '出现次数:'+max);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function Computer(color,weight,brand,type) {
+            this.color = color;
+            this.weight = weight;
+            this.brand = brand;
+            this.type = type;
+            this.watchMovies = function() {
+                console.log('watching movies');
+            }
+            this.listenMusics = function() {
+                console.log('listening music');
+            }
+            this.playGame = function() {
+                console.log('play game');
+            }
+            this.program = function() {
+                console.log('programing');
+            }
+        }
+        var com1 = new Computer('black','2kg','联想','ABC');
+        function Button(width,height,backgrandColor) {
+            this.width = width;
+            this.height = height;
+            this.backgrandColor = backgrandColor;
+        }
+        var but1 = new Button('10px','10px','red');
+        var car1 = {
+            weight: '500kg',
+            color: 'black',
+            brand: 'bwm',
+            sit: function() {
+                console.log('载人');
+            },
+            push: function() {
+                console.log('拉货');
+            }
+        }
+        var k = '';
+        for(k in com1) {
+            console.log(com1[k]);
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/data.js"></script>
+</head>
+
+<body>
+    <audio src="./assets/music.mp3" controls></audio>
+    <div class="container">
+        <ul>
+            <!-- <li class="active">Lorem ipsum dolor sit.</li> -->
+        </ul>
+    </div>
+    <script>
+        const doms = {
+            audio: document.querySelector('audio'),
+            container: document.querySelector('.container'),
+            ul: document.querySelector('.container').querySelector('ul')
+        }
+
+        /**
+         * 将一个时间字符串转换为obj
+         * @param {string} lrc
+         */
+        function lrcToObj(lrc) {
+            const arr = lrc.split('\n').map(item => {
+                const data = item.split(']')
+                // 时间字符串转换成秒
+                let toSec = data[0].substring(1).split(':')
+                let sec = +toSec[0] > 0 ? +toSec[1] + toSec[0] * 60 : +toSec[1]
+                // 返回对象
+                return {
+                    start: sec,
+                    words: data[1]
+                }
+            })
+            return arr
+        }
+        const data = lrcToObj(lrc)
+
+        // 找到当前时间对应歌词的下标
+        function findIndex() {
+            const current = doms.audio.currentTime
+            for (let i = 0; i < data.length; i++) {
+                if (current < data[i].start) return i - 1
+            }
+            return data.length - 1
+        }
+
+        // 根据歌词对象数组渲染页面
+        function createLi(data) {
+            doms.ul.innerHTML = data.map((item, index) => {
+                return `
+                <li data-id='${index}'>${item.words ? item.words : '&nbsp'}</li>
+                `
+            }).join('')
+        }
+        createLi(data)
+
+        // 设置ul位移以及添加active属性函数
+        function setOffset() {
+            const active = document.querySelector('.container .active')
+            const index = findIndex()
+            const maxOffset = doms.ul.offsetHeight - doms.container.offsetHeight
+            if (active) active.classList.remove('active')
+            if (index >= 0) {
+                const li = document.querySelector(`[data-id='${index}']`)
+                li.classList.add('active')
+                let traY = (li.offsetHeight) * index + li.offsetHeight / 2 - doms.container.offsetHeight / 2
+                // 一开始的时候歌词置顶
+                traY = traY >= 0 ? traY : 0
+                // 超过最大偏移量时，即为了让最后的歌词处于底部
+                traY = traY > maxOffset ? maxOffset : traY
+                doms.ul.style.transform = `translateY(-${traY}px)`
+            }
+        }
+        doms.audio.addEventListener('timeupdate', setOffset)
+    </script>
+</body>
+
+</html>

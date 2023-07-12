@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./promise.js"></script>
+</head>
+
+<body>
+    <script>
+        // 测试promise只能赋值一次的特性
+        // const p = new Promise((resolve, reject) => {
+        //         resolve('000')
+        //         reject('111')
+        // })
+        // console.log(p)
+
+        // 测试抛出错误
+        // const p = new Promise((resolve, reject) => {
+        //     throw('error')
+        // })
+        // console.log(p)
+
+        // 测试then方法onresolve路径
+        // const p = new Promise((resolve, reject) => {
+        //     resolve('000')
+        // })
+        // const result = p.then(v => {
+        //     return new Promise((resolve, reject) => {
+        //         resolve('000')
+        //     })
+        // }).then(v=>{console.log(v);})
+        // console.log(result)
+
+        // 测试then方法onreject路径
+        // const p = new Promise((resolve, reject) => {
+        //     reject('000')
+        // })
+        // const result = p.then(undefined, r => {
+        //     return new Promise((resolve, reject) => {
+        //         reject('000')
+        //     })
+        // }).then(undefined,r=>{throw('error')}).then(undefined,r=>{console.log(r);})
+        // console.log(result)
+
+        // 测试then方法的onresolve路径没有回调函数的情况
+        // const p = new Promise((resolve, reject) => {
+        //     resolve('000')
+        // })
+        // const result = p.then()
+        // console.log(result)
+
+        // 测试then方法的onreject路径没有回调函数的情况
+        // const p = new Promise((resolve, reject) => {
+        //     reject('000')
+        // })
+        // const result = p.then()
+        // console.log(result)
+
+        // 测试异常穿透
+        // const p = new Promise((resolve, reject) => {
+        //     resolve('000')
+        // })
+        // const result = p.then(v => 111).then(v => {throw('err')}).then(v => 333).catch(r => r)
+        // console.log(result)
+
+        // then方法的多次指定回调
+        // const p = new Promise((resolve, reject) => {
+        //     setTimeout(() => { resolve('000') }, 1000)
+        // })
+        // const result1 = p.then(v => {
+        //     alert('111')
+        //     return 111
+        // })
+        // const result2 = p.then(v => {
+        //     alert('222')
+        //     throw ('err')
+        // })
+        // // then方法的返回的promise可以多次赋值
+        // console.log(result1, result2);
+
+        // 使用resolve静态方法
+        // const p1 = Promise.resolve('111')
+        // const p2 = Promise.resolve(p1)
+        // console.log(p1,p2)
+
+        // 使用reject静态方法
+        // const p1 = Promise.reject('111')
+        // const p2 = Promise.reject(p1)
+        // console.log(p1, p2)
+
+        // 使用all静态方法
+        // const p1 = new Promise((resolve, reject) => { resolve('111') })
+        // const p2 = Promise.resolve('222')
+        // const p3 = Promise.reject('333')
+        // const p4 = Promise.all([p1, p2])
+        // console.log(p4)
+
+        // 使用race静态方法
+        // const p1 = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve('111')
+        //     }, 1000)
+        // })
+        // const p2 = Promise.resolve('222')
+        // const p3 = Promise.reject('333')
+        // const p4 = Promise.race([p1,p3])
+        // console.log(p4)
+
+
+
+
+        // promise面试题,判断输出顺序
+        // 手写的promise模拟不出promise.then()微任务的执行顺序
+        // const p1 = () => (new Promise((resolve, reject) => {
+        //     console.log(1);
+        //     let p2 = new Promise((resolve, reject) => {
+        //         console.log(2);
+        //         const timeOut1 = setTimeout(() => {
+        //             console.log(3);
+        //             resolve(4);
+        //         }, 0)
+        //         resolve(5);
+        //     });
+        //     resolve(6);
+        //     p2.then((arg) => {
+        //         console.log(arg);
+        //     });
+
+        // }));
+        // const timeOut2 = setTimeout(() => {
+        //     console.log(8);
+        //     const p3 = new Promise(reject => {
+        //         reject(9);
+        //     }).then(res => {
+        //         console.log(res)
+        //     })
+        // }, 0)
+        // p1().then((arg) => {
+        //     console.log(arg);
+        // });
+        // console.log(10);
+    </script>
+</body>
+
+</html>

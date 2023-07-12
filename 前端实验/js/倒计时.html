@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            float: left;
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+            background-color: #000;
+            font-size: 30px;
+            line-height: 100px;
+            text-align: center;
+            color: #fff;
+        }
+    </style>
+    <script>
+        window.addEventListener('load',function() {
+            function countdown() {
+            var time = '2023-2-4 18:00:00';
+            var date1 = +new Date();
+            var date2 = +new Date(time);
+            var sub = (date2 - date1) / 1000;
+            var d = parseInt(sub / 60 / 60 / 24);
+            d = d < 10 ? '0' + d : d;
+            var h = parseInt(sub / 60 / 60 % 24);
+            h = h < 10 ? '0' + h : h;
+            var m = parseInt(sub / 60 % 60);
+            m = m < 10 ? '0' + m : m;
+            var s = parseInt(sub % 60);
+            s = s < 10 ? '0' + s : s;
+            var t = [d,h,m,s];
+            for(var i=0;i<divs.length;i++){
+                divs[i].innerHTML = t[i];
+            }
+        }
+        var divs = document.querySelectorAll('div');
+        var timer = setInterval(countdown,500);
+        })
+
+    </script>
+</head>
+
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</body>
+
+</html>

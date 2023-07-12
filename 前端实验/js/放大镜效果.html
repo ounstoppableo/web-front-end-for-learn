@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            position: relative;
+            width: 398px;
+            height: 398px;
+            border: 1px solid #ccc;
+            margin-top: 100px;
+            overflow: hidden;
+        }
+
+        .mask {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 300px;
+            height: 300px;
+            background-color: #fede4f;
+            opacity: 0.5;
+            cursor: move;
+            display: none;
+        }
+
+        .b3 {
+            height: 398px;
+        }
+
+        .big {
+            position: absolute;
+            top: 100px;
+            left: 420px;
+            width: 500px;
+            height: 500px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            z-index: 999;
+            display: none;
+        }
+
+        .big img {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <img src="images/b3.png" class="b3" alt="">
+        <div class="mask"></div>
+    </div>
+    <div class="big">
+        <img src="images/big.jpg" alt="">
+    </div>
+    <script>
+        var box = document.querySelector('.box');
+        var mask = document.querySelector('.mask');
+        var big = document.querySelector('.big');
+        var img = document.querySelector('.big').querySelector('img');
+        box.addEventListener('mousemove', function (e) {
+            mask.style.display = 'block';
+            big.style.display = 'block';
+            var x = e.pageX - this.offsetLeft;
+            var y = e.pageY - this.offsetTop;
+            var maskX = x - mask.offsetWidth / 2;
+            var maskY = y - mask.offsetHeight / 2;
+            if(maskX<=0){
+                maskX=0;
+                if(maskY<=0){
+                    maskY=0;
+                }
+                if(maskY>=this.offsetHeight-mask.offsetHeight){
+                    maskY=this.offsetHeight-mask.offsetHeight;
+                }
+            }else if(maskX>=this.offsetWidth-mask.offsetWidth){
+                maskX=this.offsetWidth-mask.offsetWidth;
+                if(maskY<=0){
+                    maskY=0;
+                }
+                if(maskY>=this.offsetHeight-mask.offsetHeight){
+                    maskY=this.offsetHeight-mask.offsetHeight;
+                }
+            }else if(maskY<=0){
+                maskY=0;
+            }else if(maskY>=this.offsetHeight-mask.offsetHeight){
+                maskY=this.offsetHeight-mask.offsetHeight;
+            }
+            mask.style.top = maskY + 'px';
+            mask.style.left = maskX + 'px';
+            img.style.top = -maskY*2 + 'px';
+            img.style.left = -maskX*2 + 'px';
+        })
+        box.addEventListener('mouseleave', function () {
+            mask.style.display = 'none';
+            big.style.display = 'none';
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        alert('请输入猜数字的范围');
+        var min = prompt('请输入第一个数字');
+        var max = prompt('请输入最后一个数字');
+        var fin = getRandom(parseInt(min),parseInt(max));
+        var chance =8;
+        alert('只有8次机会哦~');
+        while(chance > 0) {
+            var num = prompt('请输入你猜的数字');
+            if(num == fin) {
+                alert('恭喜你猜对了');
+                break;
+            }else if(num > fin) {
+                alert('猜大了呢');
+            }else if(num < fin) {
+                alert('猜小了呢');
+            }
+            chance--;
+        }
+        if(chance == 0) {
+            alert('你输了');
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

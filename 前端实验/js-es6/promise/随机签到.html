@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../ajax/plug/bootstrap-3.4.1-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <button type="button" class="btn btn-primary">随机抽奖</button>
+    <script>
+        function rand(n, m) {
+            return Math.floor(n + Math.random() * (m - n + 1))
+        }
+        const btn = document.querySelector('.btn')
+        btn.addEventListener('click', () => {
+            const p = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const r = rand(1, 100)
+                    if (r <= 30) {
+                        resolve(r)
+                    } else {
+                        reject(r)
+                    }
+                }, 1000)
+            })
+            console.log(p);
+            p.then((result)=>{alert('恭喜你')},(result)=>{alert('很遗憾');})
+        })
+    </script>
+</body>
+
+</html>

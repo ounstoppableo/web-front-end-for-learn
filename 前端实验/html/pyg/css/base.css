@@ -1,0 +1,90 @@
+@font-face {
+    font-family: 'icomoon';
+    src:  url('../fonts/icomoon.eot?vzuse6');
+    src:  url('../fonts/icomoon.eot?vzuse6#iefix') format('embedded-opentype'),
+      url('../fonts/icomoon.ttf?vzuse6') format('truetype'),
+      url('../fonts/icomoon.woff?vzuse6') format('woff'),
+      url('../fonts/icomoon.svg?vzuse6#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+* {
+    margin: 0;
+    padding: 0;
+        /*所有元素的内外边距清除*/
+    box-sizing: border-box;
+    /* CSS3盒子模型免计算 */
+}
+
+em,
+i {
+    font-style: normal;
+        /*em/i是斜体字 让他变正*/
+}
+
+li {
+    list-style: none;
+        /*去掉列表的圆形点装饰*/
+}
+
+img {
+    border: 0;
+    vertical-align: middle;
+        /* 图片上有连接可能会导致图片出现边框让边框变无,vertical-align去掉图片底部的基线空白缝隙还能让旁边的文字垂直居中*/
+}
+
+button {
+    cursor: pointer;
+        /*按钮上鼠标变手*/
+}
+
+a {
+    color: #666;
+    text-decoration: none;
+        /*超链接去掉下划线并变色*/
+}
+
+a:hover {
+    color: #c81623;
+        /*:hover让鼠标经过连接变红*/
+}
+
+button,
+input {
+    font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+        /*这些都是字体类型\5B8B\4F53是宋体的Unicode编码显示不然中文乱码*/
+    border: 0;
+    outline: none;
+}
+
+body {
+    /*css3的文字放大抗锯齿*/
+    -webkit-font-smoothing: antialiased;
+    background-color: #fff;
+    font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+    color: #666;
+        /*字体的大小是12px行高1.5*/
+}
+
+.hide,
+.none {
+    display: none;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    clear: both;
+    display: block;
+    content: ".";
+    height: 0;
+        /*清除浮动的伪类选择器就是给添加了这个.clearfix的元素后面添加一个元素 visibility让他不显示 它必须有content 他默认是行内元素
+    因为我们清除浮动的基本原理就是给他内部最后一个元素添加一个div(块级元素)让他占有最下面使盒子撑开
+    然后给他清除浮动
+    */
+}
+
+.clearfix {
+    *zoom: 1;
+        /*Ie6 ie7专属清除浮动*/
+}

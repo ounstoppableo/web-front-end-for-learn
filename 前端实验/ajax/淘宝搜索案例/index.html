@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <!-- 导入页面的基本样式 -->
+  <link rel="stylesheet" href="./css/search.css" />
+  <!-- 导入 jQuery -->
+  <script src="./lib/jquery.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Logo -->
+    <img src="./images/taobao_logo.png" alt="" class="logo" />
+
+    <div class="box">
+      <!-- tab 栏 -->
+      <div class="tabs">
+        <div class="tab-active">宝贝</div>
+        <div>店铺</div>
+      </div>
+      <!-- 搜索区域（搜索框和搜索按钮） -->
+      <div class="search-box">
+        <input type="text" class="ipt" placeholder="请输入要搜索的内容" /><button class="btnSearch">
+          搜索
+        </button>
+      </div>
+      <div class="support-list">
+        <!-- <li class="list"></li> -->
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+      const ipt = document.querySelector('.ipt')
+      const sl = document.querySelector('.support-list')
+      // 封装渲染函数
+      function render(res) {
+        sl.innerHTML = res.map(item => {
+          return `
+              <li class="list">${item[0]}</li>
+              `
+        }).join('')
+      }
+      // 封装搜索框内容检测函数，如果有内容则发起jsonp请求获取推荐列表
+      function check() {
+        const value = ipt.value.trim()
+        if (!value) {
+          return sl.style.display = 'none'
+        }
+        if (sessionStorage.getItem(value)) {
+          render(JSON.parse(sessionStorage.getItem(value)))
+          return sl.style.display = 'block'
+        }
+        sl.style.display = 'block'
+        $.ajax({
+          url: `https://suggest.taobao.com/sug?q=${value}`,
+          dataType: 'jsonp',
+          success: res => {
+            // 将请求缓存存入sessionStorage，下次再查询将不再调用
+            sessionStorage.setItem(value, JSON.stringify(res.result))
+            render(res.result)
+          }
+        })
+      }
+      // 添加防抖函数，防止请求泛滥
+      function antiShake(fn, time) {
+        let timer = null
+        return function () {
+          if (timer) {
+            clearTimeout(timer)
+            timer = setTimeout(fn, time)
+          } else {
+            timer = setTimeout(fn, time)
+          }
+        }
+      }
+      // 给搜索框添加键盘弹起事件
+      ipt.addEventListener('keyup', antiShake(check, 500))
+    })
+  </script>
+</body>
+
+</html>

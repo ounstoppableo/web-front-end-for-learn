@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="carousel.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .pics {
+            display: flex;
+            position: absolute;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .focus {
+            position: relative;
+            width: 721px;
+            height: 455px;
+            overflow: hidden;
+            margin: 100px auto;
+        }
+
+        .left,
+        .right {
+            display: none;
+            position: absolute;
+            z-index: 999;
+            top: 50%;
+            transform: translateY(-50%);
+            outline: none;
+            background-color: transparent;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .right {
+            left: 100%;
+            transform: translate(-100%, -50%);
+        }
+
+        .dots {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+        }
+
+        .dots li {
+            float: left;
+            width: 12px;
+            height: 12px;
+            margin: 5px 8px;
+            border-radius: 6px;
+            background-color: #aaa;
+            cursor: pointer;
+        }
+        .dots li:first-child {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="focus">
+        <button class="left"><img src="images/arrow-prev.png" alt=""></button>
+        <button class="right"><img src="images/arrow-next.png" alt=""></button>
+        <ul class="pics">
+            <li><a href="#"><img src="images/focus.jpg" alt=""></a> </li>
+            <li><a href="#"><img src="images/focus1.jpg" alt=""></a></li>
+            <li><a href="#"><img src="images/focus2.jpg" alt=""></a> </li>
+            <li><a href="#"><img src="images/focus3.jpg" alt=""></a> </li>
+        </ul>
+        <ol class="dots">
+        </ol>
+    </div>
+</body>
+</html>

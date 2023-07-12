@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+            background: url(images/1.jpg) no-repeat;
+            background-size: 100% auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            height: 100px;
+            margin: 300px auto;
+        }
+
+        div img {
+            height: 100%;
+            transition: all 0.5s;
+            border-radius: 10px;
+        }
+        div img:hover {
+            transform: translateY(-5px);
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img src="images/1.jpg" alt="">
+        <img src="images/2.jpg" alt="">
+        <img src="images/3.jpg" alt="">
+        <img src="images/4.jpg" alt="">
+    </div>
+    <script>
+        var imgs = document.querySelectorAll('img');
+        for (var i = 0; i < imgs.length; i++) {
+            imgs[i].onclick = function() {
+                document.body.style.backgroundImage = 'url('+this.src+')';
+            }
+        }
+    </script>
+</body>
+
+</html>

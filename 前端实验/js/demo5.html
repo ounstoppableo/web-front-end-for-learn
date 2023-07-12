@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="animate2.js"></script>
+</head>
+    <style>
+        div {
+            position: absolute;
+            top:200px;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0,0,0,0.5);
+        }
+    </style>
+<body>
+    <button>前进</button>
+    <button>后退</button>
+    <div></div>
+    <script>
+        var btn = document.querySelectorAll('button');
+        var div = document.querySelector('div');
+        btn[0].addEventListener('click',function(){
+            animate2(div,500,fn);
+            function fn() {
+                div.style.backgroundColor = 'pink';
+            }
+        })
+        btn[1].addEventListener('click',function(){
+            animate2(div,-500,gn);
+            function gn() {
+                div.style.backgroundColor = 'rgba(0,0,0,0.5)';
+            }
+        })
+    </script>
+</body>
+</html>
