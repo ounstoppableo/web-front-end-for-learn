@@ -2053,7 +2053,7 @@ export default new VueRouter({
 
 ##### 注意点
 
-<img src="C:\Users\86152\Desktop\前端\vue\images\QQ截图20230710160837.png" style="zoom:67%;" />
+<img src=".\images\QQ截图20230710160837.png" style="zoom:67%;" />
 
 #### 嵌套路由
 
