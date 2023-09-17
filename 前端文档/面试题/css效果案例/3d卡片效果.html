@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card {
+            height: 400px;
+            width: 250px;
+            margin: 100px auto;
+        }
+
+        .card img {
+            transition: all 0.5s;
+        }
+
+        .card:hover .background {
+            transform: perspective(500px) rotateX(25deg);
+            box-shadow: 0px 30px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .card:hover .img {
+            opacity: 1;
+            transform: translate3d(0, -50px, 0);
+        }
+
+        .background {
+            height: 400px;
+            width: 250px;
+            position: absolute;
+            object-fit: cover;
+        }
+
+        .img {
+            position: absolute;
+            width: 250px;
+            height: 400px;
+            object-fit: cover;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <img src="./images/00086-1921856995.jpeg" class="background" alt="">
+        <img src="./images/00001-2613990847 (1).jpeg" class="img" alt="">
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 500px;
+            height: 500px;
+            margin: 100px auto;
+            display: grid;
+            grid-template-columns: var(--c1) var(--c2) var(--c3);
+            grid-template-rows: var(--r1) var(--r2) var(--r3);
+            gap: 10px;
+            background-color: #444;
+            transition: all 0.5s;
+            --r1: 1fr;
+            --r2: 1fr;
+            --r3: 1fr;
+            --c1: 1fr;
+            --c2: 1fr;
+            --c3: 1fr;
+        }
+
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <link rel="stylesheet" href="./output.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+    </div>
+</body>
+
+</html>

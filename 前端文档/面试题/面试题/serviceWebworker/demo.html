@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>点我发请求</button>
+    <script>
+        const btn = document.querySelector('button')
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register('./test.js').then((registration) => {
+                console.log("serviceWorker创建成功:", registration.scope)
+            }).catch(err => {
+                console.log("serviceWorker创建失败:" + err)
+            })
+        }
+        btn.addEventListener('click', () => {
+            const res = fetch('./00020-1409380547.jpeg')
+        })
+    </script>
+</body>
+
+</html>

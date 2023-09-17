@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <audio src="./中山真斗 - 手つかずの感情.mp3" controls></audio>
+</body>
+<script>
+    const canvas = document.querySelector('canvas')
+    const audEle = document.querySelector('audio')
+    //创建canvas上下文
+    const ctx = canvas.getContext('2d')
+    //初始化画布大小
+    function initCvs() {
+        canvas.width = innerWidth * devicePixelRatio
+        canvas.height = innerHeight / 2
+    }
+    initCvs()
+    //初始化音频上下文
+    let isInit = false
+    let dataArray, analyser
+    audEle.onplay = () => {
+        if (isInit) {
+            return
+        }
+        //获取音频上下文
+        const atx = new AudioContext()
+        //获取音频源节点
+        const source = atx.createMediaElementSource(audEle)
+        //获取分析器
+        analyser = atx.createAnalyser()
+        analyser.fftSize = 512
+        //创建存储数组
+        dataArray = new Uint8Array(analyser.frequencyBinCount)
+        //连接源节点和分析器，有助于将数据传入分析器
+        source.connect(analyser)
+        //连接分析器和扬声器，能够发出声音
+        analyser.connect(atx.destination)
+        isInit = true
+    }
+    //画
+    function draw() {
+        //每次画完都准备下一次的绘制
+        requestAnimationFrame(draw)
+        //如果音频没有初始化，则不画
+        if (!isInit) return
+        const { width, height } = canvas
+        //初始化画布
+        ctx.clearRect(0, 0, width, height)
+        //存入数据
+        analyser.getByteFrequencyData(dataArray)
+        const len = dataArray.length / 2
+        const barWidth = width / len / 2
+        ctx.fillStyle = '#2ba3ff'
+        for (let i = 0; i < len; i++) {
+            const data = dataArray[i]
+            const barHeight = data / 255 * height
+            const x = barWidth * i + width / 2
+            const x2 = barWidth * (len - i)
+            const y = height - barHeight
+            ctx.fillRect(x, y, barWidth - 2, barHeight)
+            ctx.fillRect(x2, y, barWidth - 2, barHeight)
+        }
+    }
+    draw()
+</script>
+
+</html>

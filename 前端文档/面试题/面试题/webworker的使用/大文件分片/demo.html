@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .circle {
+            height: 50px;
+            width: 50px;
+            border-radius: 25px;
+            background-color: orange;
+            animation: 4s run infinite;
+            position: absolute;
+            top: 300px;
+            left: 800px
+        }
+
+        @keyframes run {
+            0% {
+                left: 800px;
+                top: 300px;
+            }
+
+            20% {
+                left: 1000px;
+                top: 300px;
+            }
+
+            40% {
+                left: 1000px;
+                top: 500px
+            }
+
+            60% {
+                left: 600px;
+                top: 500px
+            }
+
+            80% {
+                left: 600px;
+                top: 300px
+            }
+
+            100% {
+                left: 800px;
+                top: 300px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" id="file">
+    <div class="circle"></div>
+</body>
+<script src="./createChunk.js"></script>
+<script src="./cutFile.js"></script>
+<script>
+    const inputFile = document.querySelector('#file')
+    inputFile.addEventListener('change', async (e) => {
+        const result = await cutFile(e.target.files[0])
+        console.log(result)
+    }) 
+</script>
+
+</html>

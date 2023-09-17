@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgba(13, 209, 166, 0.737);
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="600px" height="600px"></canvas>
+</body>
+<script>
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+    //移动画布，将x,y轴移到四象限模式
+    ctx.translate(canvas.width / 2, canvas.height)
+    //颠倒y轴的方向
+    ctx.scale(1, -1)
+    drawBranch([0, 0], 15, 100, 90)
+    //定义树干函数
+    //参数：起始坐标,树干粗细,树干长度,树干倾斜角度
+    function drawBranch(v0, thick, length, dir) {
+        //写终止递归条件
+        if (thick < 1) {
+            ctx.beginPath()
+            ctx.arc(...v0,5,0,2*Math.PI)
+            ctx.fillStyle = Math.random()>0.5?'#fff':'rgba(11, 218, 90, 0.74)'
+            ctx.fill()
+            return
+        }
+        if (thick <= 3 && Math.random()<0.3) {
+            return
+        }
+        //开始划线
+        ctx.beginPath()
+        //定义起点
+        ctx.moveTo(...v0)
+        //定义终点
+        const v1 = [
+            v0[0] + length * Math.cos((dir * Math.PI) / 180),
+            v0[1] + length * Math.sin((dir * Math.PI) / 180)
+        ]
+        ctx.lineTo(...v1)
+        //设置颜色
+        ctx.strokeStyle = '#333'
+        //设置线头样式
+        ctx.lineCap = 'round'
+        //设置线的粗细
+        ctx.lineWidth = thick
+        //结束
+        ctx.stroke()
+        //创建树枝递归
+        drawBranch(v1, thick * 0.8, length * 0.8, dir + Math.random() * 30)
+        drawBranch(v1, thick * 0.8, length * 0.8, dir - Math.random() * 30)
+    }
+
+</script>
+
+</html>

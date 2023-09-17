@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        .container {
+            margin-top: 100px;
+            text-align: center;
+            /* 由于contrast是对比度，所以要有比较，那么父盒子也应该添加颜色 */
+            background-color: black;
+            filter: contrast(20);
+        }
+
+        .text {
+            color: white;
+            font-size: 30px;
+            animation: run 2s forwards;
+        }
+
+        @keyframes run {
+            from {
+                filter: blur(10px);
+                letter-spacing: -20px;
+            }
+
+            to {
+                filter: blur(0px);
+                letter-spacing: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <span class="text">Education</span>
+    </div>
+</body>
+
+</html>

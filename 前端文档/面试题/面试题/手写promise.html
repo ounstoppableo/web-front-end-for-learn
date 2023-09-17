@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class MyPromise {
+            constructor(executor) {
+                this._status = 'padding'
+                this._resolveCallback = []
+                this._rejectCallback = []
+                this.result = undefined
+                const resolve = (arg) => {
+                    self = this
+                    if (self._status === 'padding') {
+                        self._status = 'fulfilled'
+                        self.result = arg
+                    }
+                    self._resolveCallback.forEach(item => {
+                        item()
+                    });
+                }
+                const reject = (arg) => {
+                    self = this
+                    if (self._status === 'padding') {
+                        self._status = 'rejected'
+                        self.result = arg
+                    }
+                    self._rejectCallback.forEach(item => {
+                        item()
+                    });
+                }
+                executor(resolve, reject)
+            }
+            then(onResolve, onReject) {
+                const self = this
+                if (!(onResolve instanceof Function)) {
+                    onResolve = (res) => {
+                        return res
+                    }
+                } else if (!(onReject instanceof Function)) {
+                    onReject = (res) => {
+                        return res
+                    }
+                }
+                return new MyPromise((resolve, reject) => {
+                    try {
+                        if (self._status === 'fulfilled') {
+                            let result = onResolve(self.result)
+                            if (result instanceof MyPromise) {
+                                if (result._status === 'fulfilled') resolve(result.result)
+                                else if (result._status === 'rejected') reject(result.result)
+                                else if (result._status === 'padding') { }
+                            } else {
+                                resolve(result)
+                            }
+
+                        } else if (self._status === 'rejected') {
+                            let result = onReject(self.result)
+                            if (result instanceof MyPromise) {
+                                if (result._status === 'fulfilled') resolve(result.result)
+                                else if (result._status === 'rejected') reject(result.result)
+                                else if (result._status === 'padding') { }
+                            } else {
+                                resolve(result)
+                            }
+                        } else if (self._status === 'padding') {
+                            self._resolveCallback.push(onResolve)
+                            self._rejectCallback.push(onReject)
+                        }
+                    } catch (err) {
+                        reject(err)
+                    }
+                })
+            }
+            catch(onReject) {
+                return this.then(undefined, onReject)
+            }
+            static all(arr) {
+                return new MyPromise((resolve, reject) => {
+                    let resultArr = []
+                    let count = 0
+                    arr.forEach((item, index) => {
+                        item.then((res) => {
+                            resultArr[index] = res
+                            count++
+                            if (arr.length === count) resolve(resultArr)
+                        }, (err) => {
+                            return reject(err)
+                        })
+                    })
+                })
+            }
+            static race(arr) {
+                return new MyPromise((resolve, reject) => {
+                    arr.forEach(item => {
+                        item.then((res) => {
+                            resolve(res)
+                        }, (err) => {
+                            reject(err)
+                        })
+                    })
+                })
+            }
+            static allSettled(arr) {
+                return new MyPromise((resolve, reject) => {
+                    let resultArr = []
+                    let count = 0
+                    arr.forEach((item, index) => {
+                        item.then((res) => {
+                            resultArr[index] = res
+                            count++
+                            if (arr.length === count) resolve(resultArr)
+                        }, (err) => {
+                            resultArr[index] = err
+                            count++
+                            if (arr.length === count) resolve(resultArr)
+                        })
+                    })
+                })
+            }
+        }
+        console.log(Promise.allSettled([new Promise((resolve, reject) => { setTimeout(() => { resolve(2) }, 0) }), Promise.resolve(1)]))
+
+        console.log(MyPromise.allSettled([new Promise((resolve, reject) => { setTimeout(() => { resolve(2) }, 0) }), Promise.resolve(1)]))
+    </script>
+</body>
+
+</html>

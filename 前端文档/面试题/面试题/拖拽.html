@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .item {
+            width: 300px;
+            height: 50px;
+            background: linear-gradient(#e66465, #9198e5);
+            color: white;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .moving {
+            background: #fff;
+            border: 1px dotted #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item" draggable="true">1</div>
+        <div class="item" draggable="true">2</div>
+        <div class="item" draggable="true">3</div>
+        <div class="item" draggable="true">4</div>
+        <div class="item" draggable="true">5</div>
+    </div>
+    <script>
+        const container = document.querySelector('.container')
+        let sourceNode
+        let sourceIndex
+        container.addEventListener('dragstart', (e) => {
+            sourceNode = e.target
+            sourceIndex = Array.from(container.children).indexOf(e.target)
+            e.target.classList.add('dragging')
+            e.dataTransfer.effectAllowed = 'move'
+            setTimeout(() => {
+                sourceNode.classList.add('moving')
+            }, 0)
+        })
+        // 阻止默认行为，以允许放置
+        container.addEventListener('dragover', (e) => {
+            event.preventDefault();
+        })
+        container.addEventListener('dragenter', (e) => {
+            if (e.target.classList.contains('item')) {
+                let index = Array.from(container.children).indexOf(e.target)
+                if (sourceIndex > index) {
+                    container.insertBefore(sourceNode, e.target)
+                } else {
+                    container.insertBefore(sourceNode, e.target.nextElementSibling)
+                }
+            }
+        })
+        container.addEventListener('dragend', () => {
+            sourceNode.classList.remove('moving')
+        })
+    </script>
+</body>
+
+</html>

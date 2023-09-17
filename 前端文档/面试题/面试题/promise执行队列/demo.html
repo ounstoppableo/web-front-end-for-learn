@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 实现一个效果，只能发送3个请求，1个请求结束了在继续发送下一个请求 -->
+</body>
+<script>
+    const jpgs = []
+    for (let i = 1; i <= 10; i++) {
+        jpgs.push(`./${i}.jpg`)
+    }
+    //请求函数
+    const reqStack = async (jpgs, maxItems) => {
+        let index = 0
+        let length = jpgs.length
+        const request = async (url) => {
+            index++
+            if (index >= length) return
+            try {
+                await fetch(new Request(url))
+            } catch (err) {
+                console.log(err)
+            } finally {
+                request(jpgs[index])
+            }
+        }
+        for (let i = 0; i < maxItems; i++) {
+            request(jpgs[index])
+        }
+    }
+    reqStack(jpgs, 3)
+</script>
+
+</html>

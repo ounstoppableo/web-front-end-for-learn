@@ -1,0 +1,14 @@
+@for $i from 0 to 9 {
+    .item:nth-child(#{$i+1}) {
+        background-color: hsl(40*$i, 100%, 64%);
+    }
+}
+
+@for $i from 0 to 9 {
+    .container:has(.item:nth-child(#{$i+1}):hover) {
+        $r: floor($i/3)+1;
+        $c: $i%3+1;
+        --c#{$c}: 2fr;
+        --r#{$r}: 2fr;
+    }
+}

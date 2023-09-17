@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.875rem;
+            padding: 20px;
+            background-color: black;
+        }
+
+        .card {
+            aspect-ratio: 4/3;
+            border-radius: 8px;
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insert {
+            position: absolute;
+            inset: .125rem;
+            aspect-ratio: inherit;
+            border-radius: inherit;
+            background-color: #171717;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            aspect-ratio: inherit;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent);
+            top: var(--y,-62.5rem);
+            left: var(--x,-62.5rem);
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <div class="card">
+        <div class="insert">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iste commodi soluta quaerat
+            fuga, a tenetur
+            exercitationem, assumenda ducimus, atque veniam ipsum? Consectetur vitae dolores eos nobis eius excepturi
+            perspiciatis!</div>
+    </div>
+    <script>
+        const cards = document.querySelectorAll('.card')
+        document.body.addEventListener('mousemove',(e)=>{
+            cards.forEach(item=>{
+                const rect = item.getBoundingClientRect()
+                item.style.setProperty('--x',e.clientX-rect.left+'px')
+                item.style.setProperty('--y',e.clientY-rect.top+'px')
+            })
+        })
+    </script>
+</body>
+
+</html>

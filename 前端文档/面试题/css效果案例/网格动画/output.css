@@ -1,0 +1,82 @@
+.item:nth-child(1) {
+  background-color: hsl(0, 100%, 64%);
+}
+
+.item:nth-child(2) {
+  background-color: hsl(40, 100%, 64%);
+}
+
+.item:nth-child(3) {
+  background-color: hsl(80, 100%, 64%);
+}
+
+.item:nth-child(4) {
+  background-color: hsl(120, 100%, 64%);
+}
+
+.item:nth-child(5) {
+  background-color: hsl(160, 100%, 64%);
+}
+
+.item:nth-child(6) {
+  background-color: hsl(200, 100%, 64%);
+}
+
+.item:nth-child(7) {
+  background-color: hsl(240, 100%, 64%);
+}
+
+.item:nth-child(8) {
+  background-color: hsl(280, 100%, 64%);
+}
+
+.item:nth-child(9) {
+  background-color: hsl(320, 100%, 64%);
+}
+
+.container:has(.item:nth-child(1):hover) {
+  --c1: 2fr;
+  --r1: 2fr;
+}
+
+.container:has(.item:nth-child(2):hover) {
+  --c2: 2fr;
+  --r1: 2fr;
+}
+
+.container:has(.item:nth-child(3):hover) {
+  --c3: 2fr;
+  --r1: 2fr;
+}
+
+.container:has(.item:nth-child(4):hover) {
+  --c1: 2fr;
+  --r2: 2fr;
+}
+
+.container:has(.item:nth-child(5):hover) {
+  --c2: 2fr;
+  --r2: 2fr;
+}
+
+.container:has(.item:nth-child(6):hover) {
+  --c3: 2fr;
+  --r2: 2fr;
+}
+
+.container:has(.item:nth-child(7):hover) {
+  --c1: 2fr;
+  --r3: 2fr;
+}
+
+.container:has(.item:nth-child(8):hover) {
+  --c2: 2fr;
+  --r3: 2fr;
+}
+
+.container:has(.item:nth-child(9):hover) {
+  --c3: 2fr;
+  --r3: 2fr;
+}
+
+/*# sourceMappingURL=output.css.map */

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        dt {
+            background-color: aqua;
+            text-align: center;
+            position: sticky;
+            /* top相对的是设置了overflow的包含块，这里也就是div */
+            top: 0
+        }
+
+        /* 即使给dl加上padding,也不会影响dt吸附的位置，但是给div加上padding就会影响到吸附的位置，因为top是从内边距以内开始算的 */
+        dl {
+            padding-top: 30px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 200px;height: 200px;margin: 0 auto;overflow: scroll;border: 1px solid #ccc">
+        <dl class="dl">
+            <dt>A</dt>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+            <dd>Asasda</dd>
+        </dl>
+        <dl class="dl">
+            <dt>B</dt>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+        </dl>
+        <dl class="dl">
+            <dt>C</dt>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+        </dl>
+        <dl class="dl">
+            <dt>D</dt>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+        </dl>
+        <dl class="dl">
+            <dt>E</dt>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+            <dd>Basdjan</dd>
+        </dl>
+    </div>
+</body>
+
+</html>

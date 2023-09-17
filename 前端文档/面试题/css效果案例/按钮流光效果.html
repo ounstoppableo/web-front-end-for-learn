@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 600px;
+            background-color: #222222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn {
+            /* outline: .125rem solid #ffffff; */
+            border: 0px;
+            background-color: transparent;
+            width: 100px;
+            height: 50px;
+            /* border: 3px solid #ffffff; */
+            border-radius: 2rem;
+            color: aqua;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            position: absolute;
+            content: '';
+            width: 200%;
+            height: 200%;
+            top: 50%;
+            left: 50%;
+            background-color: #ffffff;
+            z-index: -2;
+            transform-origin: 0 0;
+            animation: 3s linear infinite myRotate;
+        }
+        .btn::before {
+            position: absolute;
+            content: '';
+            z-index: -1;
+            inset: .125rem;
+            background-color: black;
+            border-radius: inherit;
+        }
+        @keyframes myRotate{
+            from {
+                transform: rotate(0);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="btn">请点击我!</button>
+</body>
+</html>
