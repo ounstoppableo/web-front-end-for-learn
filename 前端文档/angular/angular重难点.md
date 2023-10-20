@@ -372,7 +372,7 @@ toggle(){this.isOpen=!this.isOpen}
     trigger('toShow', [
       transition('*=>*', [
           //在Angular控制的显示隐藏下，元素会被自动添加上:enter或:leave选择器
-          //但是只会添加在被控制的元素之上
+          //但是只会添加在被ng指令控制的元素之上（*ngIf、*ngFor、viewContainerRef）
           //以这个例子来说，就是只能添加在父盒子上，子盒子就不能通过:enter去获取，也就无法实现交错效果
           //但是如果添加 { optional: true },就可以同时检测到子盒子的变化
         query(
@@ -399,6 +399,309 @@ class demo {
 }
 ~~~
 
+### 视图
+
+> angular将dom进行抽象，创造出了视图的概念，我们创建的dom、components在angular内都可以被看作各种各样的视图
+>
+> 视图的表现形式是什么呢？下面是angular封装的一些视图类：
+>
+> - ElementRef
+> - TemplateRef
+> - ViewRef
+> - ViewContainerRef
+
+下面我们将分别介绍每一个视图及其应用
+
+#### ElementRef
+
+ElementRef是最基本的抽象，它的结构内只有一个属性，nativeElement，一般我们访问dom都是通过这种方式
+
+#### TemplateRef
+
+故名思意，其主要获取的是\<template>\</template>标签
+
+有过框架开发经验的都知道，template标签他只会把内容渲染出来，template则不会被渲染，这种渲染方式有利于减少dom节点的冗余
+
+TemplateRef在angular中的使用方式：
+
+~~~ts
+//我们直接在模板中使用ng-template是不会显示在页面上的
+//具体使用还需看后续介绍
+
+@Component({
+    selector: 'sample',
+    template: `
+        <ng-template #tpl>
+            <span>I am span in template</span>
+        </ng-template>
+    `
+})
+export class SampleComponent implements AfterViewInit {
+    @ViewChild("tpl") tpl: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        let elementRef = this.tpl.elementRef;
+        // outputs `<!--container-->`
+        console.log(elementRef.nativeElement);
+    }
+}
+//输出表示，angular删除了dom中的template标签，并且输出<!--container-->注释
+~~~
+
+#### ViewRef
+
+在angular中，ViewRef表示angular视图的抽象，在angular的世界中，view是应用程序的基本构建块，它是在一起被创建或者销毁的最小元素单元。angular开发者鼓励将UI界面看作view的聚合而非dom树。
+
+Angular支持两种View：
+
+- EmbeddedView，指TemplateRef
+- HostView，指ComponentRef
+
+~~~ts
+//创建EmbeddedView
+
+let view = this.tpl.createEmbeddedView(null);
+//这样我们就创建了一个视图，具体使用请往后看
+~~~
+
+~~~ts
+//创建HostView
+//首先需要自己创一个testComponent，这里我就不演示了
+
+constructor(private injector: Injector,
+            private r: ComponentFactoryResolver) {
+    let factory = this.r.resolveComponentFactory(testComponent);
+    let componentRef = factory.create(injector);
+    let view = componentRef.hostView;
+}
+~~~
+
+#### ViewContainerRef
+
+用于容纳一个或多个view的容器，前面我们讲了如何创建EmbeddedView、HostView，但也只是停留在创建之上，我们要如何使它们在页面中显示出来呢？这时ViewContainerRef的作用就体现出来了
+
+首先需要提醒的是，任何 DOM 元素都可以作为 View 的容器。有趣的是，Angular 不是将 View 插入到元素中，而是绑定到元素的 ViewContainer 中。这类似于 router-outlet 如何插入 Component。
+
+通常，比较好的将一个位置标记为 ViewContainer 的方式，是创建一个 \<ng-container> 元素。它会被渲染为一条 comment，所以不会带来多于的 HTML 元素到 DOM 中。下面是一个示例，演示了在 Component 的模板中创建 ViewContainer。
+
+~~~ts
+//我们先搭建好模板
+@Component({
+  selector: 'app-root',
+  template: `
+        <span>I am first span</span>
+        <ng-container #vc></ng-container>
+        <span>I am last span</span>
+    `,
+})
+export class AppComponent {
+  @ViewChild("vc", { read: ViewContainerRef }) vc!: ViewContainerRef;
+
+  ngAfterViewInit(): void {
+    // outputs `<!-- ng-container -->`
+    console.log(this.vc.element.nativeElement);
+  }
+}
+//用这种方式添加就不会造成dom冗余
+
+//接下来我们添加试图吧
+//首先我们需要知道ViewContainerRef的接口
+class ViewContainerRef {
+    ...
+    clear() : void  //清除所有视图
+    insert(viewRef: ViewRef, index?: number) : ViewRef  //插入视图
+    get(index: number) : ViewRef  //获取视图
+    indexOf(viewRef: ViewRef) : number  //查找下标
+    detach(index?: number) : ViewRef  //拆除视图
+    move(viewRef: ViewRef, currentIndex: number) : ViewRef  //移动视图
+}
+~~~
+
+~~~ts
+//首先我们先试试EmbeddedView
+
+@Component({
+  selector: 'app-root',
+  template: `
+        <span>I am first span</span>&nbsp;
+        <ng-container #vc></ng-container>&nbsp;
+        <span>I am last span</span>
+        <ng-template #tpl>
+            <span>I am span in template</span>
+        </ng-template>
+    `,
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  @ViewChild("vc", { read: ViewContainerRef }) vc!: ViewContainerRef;
+  @ViewChild("tpl") tpl!: TemplateRef<any>;
+
+  ngAfterViewInit(): void {
+    // outputs `template bindings={}`
+    let view = this.tpl.createEmbeddedView(null);
+    this.vc.insert(view);
+  }
+}
+~~~
+
+页面中终于能体现出template了!
+
+![](.\images\QQ截图20231020135913.png)
+
+~~~ts
+//再试试hostview
+
+@Component({
+  selector: 'app-root',
+  template: `
+        <span>I am first span</span>&nbsp;
+        <ng-container #vc></ng-container>&nbsp;
+        <span>I am last span</span>
+    `,
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  @ViewChild("vc", { read: ViewContainerRef }) vc!: ViewContainerRef;
+  view: any = null
+
+  ngAfterViewInit(): void {
+    // outputs `template bindings={}`
+    this.vc.insert(this.view);
+  }
+  constructor(private injector: Injector,
+    private r: ComponentFactoryResolver) {
+    let factory = this.r.resolveComponentFactory(TestComponent);
+    let componentRef = factory.create(injector);
+    this.view = componentRef.hostView;
+  }
+}
+~~~
+
+效果如下：
+
+![](.\images\QQ截图20231020140451.png)
+
+> 到这里为止，我们应该能明白angular的视图机制了
+
+我们来看看用ng-container和普通dom节点创建视图有什么区别
+
+这是利用ng-container创建的：
+
+![](.\images\QQ截图20231020140930.png)
+
+这是利用dom创建的：
+
+![](.\images\QQ截图20231020141041.png)
+
+我们可以发现下面相比上面多了一个div标签，可以证明ng-container不会产生冗余dom节点，并且我们可以看到，视图的添加并不是在viewcontainer内部的，而是在其下方，这就可以解释:
+
+> 有趣的是，Angular 不是将 View 插入到元素中，而是绑定到元素的 ViewContainer 中。
+
+#### 简单的添加视图
+
+> 如果每次创建视图都要用那么多方法，实现起来实在是太繁琐了，angular的开发者当然也想到这一点，于是提供了一种便捷的添加视图的方法
+
+- ngTemplateOutlet
+- ngComponentOutlet
+
+##### ngTemplateOutlet
+
+> 故名思意，就是创建并添加template的视图
+
+~~~ts
+//我们之前不是尝试过直接在模板中添加template标签吗，然后发现不能在页面显示，但是按照下面的写法就可以了
+@Component({
+  selector: 'app-root',
+  template: `
+        <span>I am first span</span>
+        <ng-container [ngTemplateOutlet]="tpl"></ng-container>
+        <span>I am last span</span>
+        <ng-template #tpl>
+            <span>I am span in template</span>
+        </ng-template>
+    `,
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+}
+//或者不使用ng-container而使用普通dom节点
+@Component({
+  selector: 'app-root',
+  template: `
+        <span>I am first span</span>
+        <dom [ngTemplateOutlet]="tpl"></dom>
+        <span>I am last span</span>
+        <ng-template #tpl>
+            <span>I am span in template</span>
+        </ng-template>
+    `,
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+}
+~~~
+
+##### ngComponentOutlet
+
+~~~ts
+@Component({
+  selector: 'app-root',
+  template: `
+        <span>I am first span</span>
+        <ng-container *ngComponentOutlet="TestComponent"></ng-container>
+        <span>I am last span</span>
+    `,
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  TestComponent = TestComponent
+}
+//其实执行逻辑就是之前编程式添加的逻辑
+~~~
+
+#### 总结
+
+看到这里我们应该可以理解angular的view驱动，angular模板中的一切都被看做是视图，普通的dom节点是ElementRef，template模板是templateRef
+
+普通节点angular在初始化的过程就帮助创建视图了，而template这种标签是需要给它进行视图化并插入视图容器中，才能在页面显示
+
+但是对于component，如果直接在页面中使用，angular会自动进行渲染，但是如果要通过视图的方式，也可以进行渲染，底层的原理都是一样的，都是经历了视图化再插入到视图容器中
+
+### 动态创建组件-portals
+
+> 视图容器中插入视图貌似已经实现了动态创建组件、template的功能，但是似乎仍有不足：视图间无法相互输入输出
+>
+> 这时angular官方提供了一套开发工具Component Dev Kit (CDK)->@angular/cdk/portal，内涵portal来辅助动态组件的生成
+
+portal的三种形态：
+
+- ComponentPortal
+- TemplatePortal
+- DomPortal
+
+> 它们三个的泛型基类是Portal<T>，有三种方法：
+>
+> - attach（挂载到容器）
+> - detach（从容器移除）
+> - isAttached（判断视图是否是挂载状态）
+
+相比原生（componentFactory），portal创建动态组件更简单：
+
+~~~ts
+//ComponentPortal
+this.componentPortal = new ComponentPortal(ExampleComponent);
+~~~
+
+~~~ts
+//templatePortal
+this.templatePortal = new TemplatePortal(this.testTemplate)
+~~~
+
+~~~ts
+//domPortal
+this.domPortal = new DomPortal(this.domPortal);
+~~~
+
 ### angular原理
 
 #### 挂载器
@@ -414,7 +717,7 @@ platformBrowserDynamic()
   .catch((err) => console.error(err));
 ~~~
 
-我们一点一点来结构吧。。
+我们一点一点来解构吧。。
 
 ~~~ts
 //首先platformBrowserDynamic方法为
