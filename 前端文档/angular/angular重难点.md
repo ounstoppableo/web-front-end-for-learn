@@ -286,6 +286,158 @@ angular的生命周期为如下：
 > - ngAfterViewChecked()：页面变化结束后调用，类似update()，但是注意不要进入死循环
 > - ngOnDestroy()：用于清除一些宏任务
 
+### ng-deep
+
+> ng-deep是angular中一个非常好用的css选择器
+
+ng-deep的主要作用是深度控制，即能够控制子组件内部的css选择器
+
+~~~css
+/** 比如子组件内部 **/
+h1 {
+    color: red
+}
+/** 那么我们即使在父组件中写同样的选择器，也不会对子组件内部的选择器有任何影响 **/
+/** 但如果这样写 **/
+::ng-deep h1 {
+    color: yellow
+}
+/** 子组件的选择器就可以被父组件的选择器覆盖 **/
+~~~
+
+
+
+不过由于其特性，容易造成全局污染，所以一般与:host搭配使用，host表示的就是只在组件范围内生效，类似vue的scoped
+
+> 单独使用ng-deep这种做法已经被angular官方废弃
+
+~~~css
+/** 用法 **/
+/** 假设我们需要对ant组件的分页器进行自定义控制，可以这样写 **/
+:host ::ng-deep .ant-pagination{
+    
+}
+~~~
+
+### 自定义指令
+
+#### 属性型指令
+
+##### 基础写法
+
+~~~ts
+import { Directive, ElementRef } from '@angular/core';
+
+//对于一个指令，我们需要明确几个结构
+//第一个选择器
+@Directive({
+    //当我们在某个dom元素上添加appHighlight属性，就代表其绑定上了该指令
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+    //绑定之后，constructor会被注入宿主元素
+    //我们接收之后就可以进行操作了
+    constructor(private el: ElementRef) {
+       this.el.nativeElement.style.backgroundColor = 'yellow';
+    }
+}
+~~~
+
+~~~html
+<p appHighlight>Highlight me!</p>
+~~~
+
+##### 处理用户事件
+
+~~~ts
+import { Directive, ElementRef, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+
+  constructor(private el: ElementRef) { }
+
+    //利用HostListener可以添加用户事件
+  @HostListener('mouseenter') onMouseEnter() {
+    this.highlight('yellow');
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.highlight('');
+  }
+
+  private highlight(color: string) {
+    this.el.nativeElement.style.backgroundColor = color;
+  }
+
+}
+~~~
+
+![](.\images\highlight-directive-anim.gif)
+
+##### 指令传值
+
+~~~ts
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+	//通过@Input实现传值
+  @Input() appHighlight = '';
+    
+  constructor(private el: ElementRef) { }
+
+  @HostListener('mouseenter') onMouseEnter() {
+    this.highlight(this.appHighlight);
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.highlight('');
+  }
+
+  private highlight(color: string) {
+    this.el.nativeElement.style.backgroundColor = color;
+  }
+
+}
+~~~
+
+~~~html
+<p [appHighlight]="'yellow'">Highlight me!</p>
+~~~
+
+#### 结构型指令
+
+> 像\*ngIf、\*ngFor这样的指令就是结构型指令
+
+~~~ts
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+
+@Directive({ selector: '[appUnless]'})
+export class UnlessDirective {
+  private hasView = false;
+
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private viewContainer: ViewContainerRef) { }
+
+  @Input() set appUnless(condition: boolean) {
+    if (!condition && !this.hasView) {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+      this.hasView = true;
+    } else if (condition && this.hasView) {
+      this.viewContainer.clear();
+      this.hasView = false;
+    }
+  }
+}
+~~~
+
+
+
 ### 动画
 
 > 主要说一下用法
@@ -701,6 +853,158 @@ this.templatePortal = new TemplatePortal(this.testTemplate)
 //domPortal
 this.domPortal = new DomPortal(this.domPortal);
 ~~~
+
+### 内容投影
+
+> 内容投影在vue中类似插槽，即在组件标签中插入标签
+
+内容投影分为三种：
+
+- 单槽内容投影
+- 多槽内容投影
+- 条件内容投影
+
+#### 单槽内容投影
+
+~~~ts
+//首先我们需要创造一个容器，即在组件插入的标签会显示的位置
+//就类似vue的slot，在angular中是<ng-content></ng-content>
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-zippy-basic',
+  template: `
+    <h2>可以接收投影的组件</h2>
+    <ng-content></ng-content>
+  `
+})
+export class ZippyBasicComponent {}
+~~~
+
+~~~html
+<app-zippy-basic>
+  <p>投影的内容</p>
+</app-zippy-basic>
+~~~
+
+效果图
+
+![](.\images\Snipaste_2023-10-22_13-42-36.png)
+
+#### 多槽内容投影
+
+~~~ts
+//多槽顾名思义，就是可以投影多个内容
+//但不止这个，多槽还能控制投影出现的位置，可以通过<ng-content> 的 select 属性来完成此任务
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-zippy-multislot',
+  template: `
+    <h2>多槽内容投影</h2>
+
+    Default:
+    <ng-content></ng-content>
+	<!-- 例如这个 -->
+    Question:
+    <ng-content select="[question]"></ng-content>
+  `
+})
+export class ZippyMultislotComponent {}
+~~~
+
+~~~html
+<app-zippy-multislot>
+    <!-- 添加上question属性，作用就类似于vue的具名插槽 -->
+  <p question>
+    Is content projection cool?
+  </p>
+  <p>Let's learn about content projection!</p>
+</app-zippy-multislot>
+~~~
+
+效果图：
+
+![](.\images\Snipaste_2023-10-22_13-47-44.png)
+
+当然，我们不能被误导一个\<ng-content>\</ng-content>只能接收一个标签，其实它可以接收任意数量的标签：
+
+~~~html
+<app-zippy-multislot>
+    <!-- 添加上question属性，作用就类似于vue的具名插槽 -->
+    <p question>
+    Is content projection cool?
+    </p>
+    <p question>Let's learn about content projection!</p>
+    <p>Let's learn about content projection!</p>
+    <p>Let's learn about content projection!</p>
+</app-zippy-multislot>
+~~~
+
+效果图：
+
+![](.\images\Snipaste_2023-10-22_13-51-51.png)
+
+> 需要注意，投影只会以父组件的样式为基础生效，在子组件（被投影组件）中是无法写投影的样式的
+
+#### 有条件的内容投影
+
+~~~ts
+//example-zippy.template.ts
+import { Component, Directive, Input, TemplateRef, ContentChild, HostBinding, HostListener } from '@angular/core';
+
+@Directive({
+  selector: 'button[appExampleZippyToggle]',
+})
+export class ZippyToggleDirective {
+  @HostBinding('attr.aria-expanded') ariaExpanded = this.zippy.expanded;
+  @HostBinding('attr.aria-controls') ariaControls = this.zippy.contentId;
+  @HostListener('click') toggleZippy() {
+    this.zippy.expanded = !this.zippy.expanded;
+  }
+  constructor(public zippy: ZippyComponent) {}
+}
+
+let nextId = 0;
+
+@Directive({
+  selector: '[appExampleZippyContent]'
+})
+export class ZippyContentDirective {
+  constructor(public templateRef: TemplateRef<unknown>) {}
+}
+
+@Component({
+  selector: 'app-example-zippy',
+  templateUrl: 'example-zippy.template.html',
+})
+export class ZippyComponent {
+  contentId = `zippy-${nextId++}`;
+  @Input() expanded = false;
+    //用于接收外部传来的template，只能接收一个，@ContentChildren能接收多个
+  @ContentChild(ZippyContentDirective) content!: ZippyContentDirective;
+}
+~~~
+
+~~~html
+<!-- app.component.html -->
+<app-example-zippy>
+  <button type="button" appExampleZippyToggle>Is content project cool?</button>
+  <ng-template appExampleZippyContent>
+    It depends on what you do with it.
+  </ng-template>
+</app-example-zippy>
+~~~
+
+~~~html
+<!-- example-zippy.template.html -->
+<ng-content></ng-content>
+<div *ngIf="expanded" [id]="contentId">
+    <ng-container [ngTemplateOutlet]="content.templateRef"></ng-container>
+</div>
+~~~
+
+
 
 ### angular原理
 
