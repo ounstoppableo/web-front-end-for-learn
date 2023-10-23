@@ -413,6 +413,41 @@ export class HighlightDirective {
 
 > 像\*ngIf、\*ngFor这样的指令就是结构型指令
 
+首先我们需要知道结构型指令的第二个用法，就是与ng-template搭配使用的用法
+
+ngIf:
+
+~~~html
+<ng-template [ngIf]="hero">
+  <div class="name">{{hero.name}}</div>
+</ng-template>
+
+<!-- 他的作用就类似下面 -->
+<div *ngIf="hero" class="name">{{hero.name}}</div>
+
+<!-- 并且ng-template也不会被渲染，只有内容会被渲染 -->
+~~~
+
+ngFor:
+
+~~~html
+<ng-template ngFor let-hero [ngForOf]="heroes"
+  let-i="index" let-odd="odd" [ngForTrackBy]="trackById">
+  <div [class.odd]="odd">
+    ({{i}}) {{hero.name}}
+  </div>
+</ng-template>
+
+<!-- 他的作用就类似下面 -->
+<div
+  *ngFor="let hero of heroes; let i=index; let odd=odd; trackBy: trackById"
+  [class.odd]="odd">
+  ({{i}}) {{hero.name}}
+</div>
+~~~
+
+来看看自定义结构型指令：
+
 ~~~ts
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
@@ -424,6 +459,9 @@ export class UnlessDirective {
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef) { }
 
+    
+    //接收的参数是标签属性里传入的参数
+    //由逻辑可以看出这是一个与ngif相反的指令
   @Input() set appUnless(condition: boolean) {
     if (!condition && !this.hasView) {
       this.viewContainer.createEmbeddedView(this.templateRef);
@@ -436,7 +474,53 @@ export class UnlessDirective {
 }
 ~~~
 
+对于依赖注入的templateRef和viewContainer，angular官方是这样说的：
 
+> `UnlessDirective` 会通过 Angular 生成的 `<ng-template>` 创建一个[嵌入的视图](https://angular.cn/api/core/EmbeddedViewRef)，然后将该视图插入到该指令的原始 `<p>` 宿主元素紧后面的[视图容器](https://angular.cn/api/core/ViewContainerRef)中。
+
+简单的说，被绑定该指令的dom并不会显示，而是angular会自动在该dom后添加一个viewContainer，并将dom转换成template，如果本身就是template就不需要转换，通过依赖注入传给指令，然后根据condition去进行viewContainer内的视图添加和删除
+
+~~~html
+<hr>
+
+<h2 id="appUnless">UnlessDirective</h2>
+<p>
+  The condition is currently
+  <span [ngClass]="{ 'a': !condition, 'b': condition, 'unless': true }">{{condition}}</span>.
+  <button
+    type="button"
+    (click)="condition = !condition"
+    [ngClass] = "{ 'a': condition, 'b': !condition }" >
+    Toggle condition to {{condition ? 'false' : 'true'}}
+  </button>
+</p>
+
+<p *appUnless="condition" class="unless a">
+  (A) This paragraph is displayed because the condition is false.
+</p>
+
+<p *appUnless="!condition" class="unless b">
+  (B) Although the condition is true,
+  this paragraph is displayed because appUnless is set to false.
+</p>
+
+
+<h4>UnlessDirective with template</h4>
+
+<p *appUnless="condition">Show this sentence unless the condition is true.</p>
+
+<p *appUnless="condition" class="code unless">
+  (A) &lt;p *appUnless="condition" class="code unless"&gt;
+</p>
+
+<ng-template [appUnless]="condition">
+  <p class="code unless">
+    (A) &lt;ng-template [appUnless]="condition"&gt;
+  </p>
+</ng-template>
+
+<hr />
+~~~
 
 ### 动画
 
@@ -1004,8 +1088,6 @@ export class ZippyComponent {
 </div>
 ~~~
 
-
-
 ### angular原理
 
 #### 挂载器
@@ -1170,3 +1252,7 @@ function createPlatformInjector(providers: StaticProvider[] = [], name?: string)
 }
 //解析器主要就是将递归去解析各个组件，将用户代码->AST->界面视图代码
 ~~~
+
+#### 依赖注入
+
+待更新中。。。
