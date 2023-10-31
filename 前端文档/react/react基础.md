@@ -1098,6 +1098,16 @@ function MyComponent() {
 
 通过使用`useEffect`，你可以模拟函数式组件的生命周期行为，同时保持函数组件的简洁和可读性。
 
+##### 为什么模拟更新时销毁函数会多次执行
+
+`useEffect` 在模拟更新时执行多次的情况通常是因为它的执行时间取决于依赖项的变化，以及在每次渲染周期结束后执行清理操作。这可以看作是一种 React 的优化机制，它确保在依赖项变化时能够执行新的 `useEffect` 代码，同时在组件卸载时执行清理函数。
+
+`useEffect` 的第二个参数是一个依赖数组，它包含了影响 `useEffect` 执行的变量。如果依赖数组为空，`useEffect` 仅在组件挂载和卸载时执行，就像 `componentDidMount` 和 `componentWillUnmount` 方法。但如果依赖数组不为空，`useEffect` 将在组件挂载后，以及依赖项发生变化后执行。
+
+在每次渲染周期中，React 会比较依赖项的当前值和上一次渲染的值，如果它们不相等，就会执行 `useEffect` 中的代码。这包括组件的首次渲染和后续的更新。在每次执行新的 `useEffect` 代码时，React 也会保留上一次执行的 `useEffect` 代码，并在执行新代码前执行上一次代码的清理函数，以模拟 `componentWillUnmount`。
+
+所以，如果你在 `useEffect` 中有一些需要在每次渲染周期结束后执行的操作，它们可能会被执行多次，因为 `useEffect` 会在每次渲染周期中执行。如果你想让某些代码只在组件卸载时执行，可以在 `useEffect` 的清理函数中处理这些操作。这样，清理函数只会在组件卸载时执行一次，模拟了`componentWillUnmount` 的行为
+
 #### 将事件从effect中分开（useEffectEvent）
 
 > 通常有一种情况，我们不希望非响应式的部分存在于effect中，比如：
