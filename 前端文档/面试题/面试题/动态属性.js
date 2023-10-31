@@ -13,4 +13,5 @@ const demo = new Proxy({
         return reciver
     }
 })
+
 console.log(100 + demo[5][6])

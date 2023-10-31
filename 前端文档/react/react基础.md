@@ -921,7 +921,7 @@ export default function Form() { 
 
 > - effect会存储上一次的依赖，然后和现在的依赖进行对比(Object.is)，不同的话才执行effect内的逻辑，否则不执行
 >
-> - 依赖如果为空，那么每次渲染都会执行
+> - 依赖如果为空，那么只会在mounted时执行
 
 **什么时候需要些依赖？**
 
@@ -976,12 +976,6 @@ export default function Timer() {
   );
 }
 ~~~
-
-> 我们要明确：
->
-> - onTick在每次渲染后其实都是指向不同的空间的
-> - 然而由于useEffect没写依赖，他会认为回调中没有东西发生变化，以至于其没有修改onTick的地址
-> - 所以每次执行的都是刚开始的onTick
 
 我们应该如何进行修复呢？
 
