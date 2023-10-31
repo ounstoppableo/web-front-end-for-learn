@@ -910,19 +910,6 @@ export default function Form() { 
 > - 指定依赖
 > - 必要时添加清理函数
 
-##### effect执行时机
-
-> - 每次组件将虚拟dom反映到真实dom之后才会执行，倘若effect内部没有set函数或其他会引发组件再渲染的hook，那么effect是不会引发组件再渲染的
->
-> - 一般来说effect再每次组件渲染完后都会执行
-> - 但是增加依赖后会在依赖改变后才进行执行，依赖会放在第二个参数，以数组形式传参，没有依赖时可以省略第二个参数，也可以只写一个[]
-
-##### effect依赖的原理
-
-> - effect会存储上一次的依赖，然后和现在的依赖进行对比(Object.is)，不同的话才执行effect内的逻辑，否则不执行
->
-> - 依赖如果为空，那么只会在mounted时执行
-
 **什么时候需要些依赖？**
 
 > - 依赖一般都是持久化的数据：state、props等
@@ -1061,13 +1048,55 @@ export default function Timer() {
 
 ##### effect原理
 
-> 到了这里我们其实可以猜到effect的回调是会不断更新的
->
-> 而这个回调更新的契机就是依赖发生变化，如果没写依赖，那就不会进行更新
->
-> 其实清理函数也与依赖变化有关
->
-> 如果我们写了一个清理函数，内部可以写一个console.log，这样我们就可以清楚的知道，在没写依赖的时候控制台是不会有输出的，写了依赖时只有依赖发生变化时才会有输出
+在React中，函数式组件（Function Components）可以使用`useEffect`钩子来模拟类组件的生命周期行为。`useEffect`允许你执行副作用操作（如数据获取、订阅、DOM操作等），并且可以在组件的不同生命周期阶段触发这些操作。
+
+以下是一些常见的生命周期行为以及如何在函数式组件中使用`useEffect`来模拟它们：
+
+1. **componentDidMount**：`useEffect`可以模拟组件挂载后的操作。
+
+```react
+javascriptCopy codeimport React, { useEffect } from 'react';
+
+function MyComponent() {
+  useEffect(() => {
+    // 这里的代码在组件挂载后执行
+    // 可以用来执行初始化操作
+  }, []); // 空依赖数组表示只在挂载时执行
+}
+```
+
+1. **componentDidUpdate**：`useEffect`可以模拟组件更新后的操作。
+
+```react
+javascriptCopy codeimport React, { useEffect } from 'react';
+
+function MyComponent(props) {
+  useEffect(() => {
+    // 这里的代码在每次组件更新后执行
+    // 可以根据props或state的变化执行相应操作
+  }, [props.someValue]); // 传入props.someValue来监听特定属性的变化
+}
+```
+
+1. **componentWillUnmount**：`useEffect`可以模拟组件卸载前的操作。
+
+```react
+javascriptCopy codeimport React, { useEffect } from 'react';
+
+function MyComponent() {
+  useEffect(() => {
+    // 这里的代码在组件卸载前执行
+    // 可以用来清理资源或取消订阅
+    return () => {
+      // 这里的代码在组件卸载时执行
+    };
+  }, []);
+}
+```
+
+`useEffect`的第一个参数是一个函数，它包含了要执行的副作用代码。第二个参数是一个依赖数组，可以指定哪些依赖发生变化时触发`useEffect`。如果依赖数组为空，`useEffect`仅在组件挂载和卸载时执行。如果依赖数组包含特定变量，`useEffect`将在这些变量发生变化时执行。
+
+通过使用`useEffect`，你可以模拟函数式组件的生命周期行为，同时保持函数组件的简洁和可读性。
 
 #### 将事件从effect中分开（useEffectEvent）
 
