@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## react基础语法
 
 ### JSX
@@ -1163,7 +1162,6 @@ function ChatRoom({ roomId, theme }) {
 
 
 
-=======
 ## react基础语法
 
 ### JSX
@@ -2361,4 +2359,3 @@ function ChatRoom({ roomId, theme }) {
 
 
 
->>>>>>> refs/remotes/origin/main
