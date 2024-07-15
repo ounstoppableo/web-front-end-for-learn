@@ -1,159 +1,386 @@
 <mxfile host="65bd71144e">
     <diagram id="IjNPmNTiGT3FZmEybGMK" name="第 1 页">
-        <mxGraphModel dx="1957" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+        <mxGraphModel dx="1130" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
+                <mxCell id="258" value="" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=none;strokeColor=#00FF80;dashed=1;strokeWidth=3;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="950" width="880" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="253" value="" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=none;strokeColor=#FFFF99;dashed=1;strokeWidth=3;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="100" width="1230" height="330" as="geometry"/>
+                </mxCell>
+                <mxCell id="255" value="" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=none;strokeColor=#FF3399;dashed=1;strokeWidth=3;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="460" width="2140" height="430" as="geometry"/>
+                </mxCell>
                 <mxCell id="103" value="ref0" style="ellipse;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="610" y="120" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="490" y="310" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="104" value="computed0" style="ellipse;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="120" y="120" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="890" y="310" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="106" value="" style="endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;fillColor=#fff2cc;" parent="1" source="103" target="107" edge="1">
+                <mxCell id="106" value="" style="endArrow=classic;html=1;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeColor=#000000;" parent="1" source="103" target="107" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="450" y="390" as="sourcePoint"/>
-                        <mxPoint x="540" y="160" as="targetPoint"/>
+                        <mxPoint x="455" y="608" as="sourcePoint"/>
+                        <mxPoint x="545" y="378" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="107" value="triggerEffects" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="414" y="130" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="710" y="320" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="108" value="" style="endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fff2cc;" parent="1" source="107" target="104" edge="1">
+                <mxCell id="108" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fff2cc;" parent="1" source="107" target="104" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="450" y="390" as="sourcePoint"/>
-                        <mxPoint x="500" y="340" as="targetPoint"/>
+                        <mxPoint x="715" y="520" as="sourcePoint"/>
+                        <mxPoint x="505" y="290" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="109" value="2.修改computed0._dirtyLevel&lt;br&gt;为dirty，&lt;br&gt;并触发computed的trigger" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="235" y="120" width="180" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="110" value="" style="endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=none;fillColor=#fff2cc;" parent="1" source="104" target="111" edge="1">
+                <mxCell id="110" value="" style="endArrow=classic;html=1;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;strokeColor=#000000;" parent="1" source="104" target="111" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="450" y="370" as="sourcePoint"/>
-                        <mxPoint x="180" y="280" as="targetPoint"/>
+                        <mxPoint x="1060" y="710" as="sourcePoint"/>
+                        <mxPoint x="790" y="620" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="111" value="triggerEffects" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="120" y="280" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="1150" y="320" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="115" value="someEffects" style="ellipse;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="121" y="455" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1340" y="310" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="116" value="" style="endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fillColor=#fff2cc;" parent="1" source="111" target="115" edge="1">
+                <mxCell id="116" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fff2cc;" parent="1" source="111" target="115" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="181" y="405" as="sourcePoint"/>
-                        <mxPoint x="501" y="385" as="targetPoint"/>
+                        <mxPoint x="791" y="745" as="sourcePoint"/>
+                        <mxPoint x="1111" y="725" as="targetPoint"/>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="117" value="4.修改someEffects._dirtyLevel为&lt;br&gt;MaybeDirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="91" y="350" width="200" height="40" as="geometry"/>
-                </mxCell>
-                <mxCell id="118" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.917;entryY=0.875;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#fff2cc;" parent="1" source="115" target="104" edge="1">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="450" y="360" as="sourcePoint"/>
-                        <mxPoint x="500" y="310" as="targetPoint"/>
-                        <Array as="points">
-                            <mxPoint x="330" y="370"/>
-                            <mxPoint x="330" y="290"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="119" value="5/9/13.操作访问value属性，完结会清dirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="310" y="310" width="240" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="120" value="1.发生变化" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="534" y="135" width="80" height="30" as="geometry"/>
+                    <mxGeometry x="510" y="280" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="121" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=0.408;exitY=-0.025;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.017;entryY=0.288;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#fff2cc;" parent="1" source="104" target="104" edge="1">
+                <mxCell id="127" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fff2cc;" parent="1" source="115" target="138" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="80" y="150" as="sourcePoint"/>
-                        <mxPoint x="130" y="100" as="targetPoint"/>
+                        <mxPoint x="791" y="945" as="sourcePoint"/>
+                        <mxPoint x="1600" y="350" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="138" value="dfs遍历所有相关依赖" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1550" y="320" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="163" value="self.dirty" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="640" y="630" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="168" value="" style="edgeStyle=none;html=1;strokeColor=#000000;" parent="1" source="165" target="163" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="165" value="get value()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="630" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="177" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="163" target="178" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="780" y="680" as="sourcePoint"/>
+                        <mxPoint x="830" y="660" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="178" value="maybeDirty?" style="rhombus;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="830" y="625" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="179" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="178" target="194" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="940" y="585" as="sourcePoint"/>
+                        <mxPoint x="1380" y="570" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="140" y="80"/>
-                            <mxPoint x="80" y="100"/>
+                            <mxPoint x="940" y="560"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="122" value="6.因为脏等级为dirty,触发run方法&lt;br&gt;获取最新value，并将脏等级改为noDirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry y="55" width="230" height="40" as="geometry"/>
-                </mxCell>
-                <mxCell id="126" value="8.修改someEffects脏等级为dirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="91" y="405" width="190" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="127" value="" style="endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.45;entryY=0.033;entryDx=0;entryDy=0;entryPerimeter=0;fillColor=#fff2cc;" parent="1" source="115" target="128" edge="1">
+                <mxCell id="180" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="178" target="183" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="181" y="605" as="sourcePoint"/>
-                        <mxPoint x="181" y="645" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="128" value="triggerEffects" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="126" y="645" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="130" value="5/9/13.触发trigger" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="121" y="570" width="120" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="131" value="" style="endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fillColor=#fff2cc;" parent="1" source="128" edge="1">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="186" y="785" as="sourcePoint"/>
-                        <mxPoint x="186" y="835" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="133" value="moreSomeEffects" style="ellipse;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="126" y="835" width="120" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="134" value="6/10.修改moreSomeEffects._dirtyLevel为&lt;br&gt;MaybeDirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="70" y="735" width="240" height="40" as="geometry"/>
-                </mxCell>
-                <mxCell id="135" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.7;entryY=1.013;entryDx=0;entryDy=0;fillColor=#fff2cc;entryPerimeter=0;" parent="1" source="133" target="115" edge="1">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="291" y="795" as="sourcePoint"/>
-                        <mxPoint x="241" y="565" as="targetPoint"/>
+                        <mxPoint x="930" y="787.5" as="sourcePoint"/>
+                        <mxPoint x="1040" y="740" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="341" y="795"/>
-                            <mxPoint x="391" y="635"/>
+                            <mxPoint x="940" y="750"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="136" value="7/11/15.操作访问value属性,完结会清dirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="341" y="675" width="240" height="30" as="geometry"/>
+                <mxCell id="181" value="no" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1160" y="550" width="40" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="137" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="133" target="138" edge="1">
+                <mxCell id="182" value="yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="950" y="740" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="183" value="遍历self.deps，获取到所有依赖的响应式数据的dirtyLevel" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1030" y="725" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="184" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="183" target="187" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="451" y="655" as="sourcePoint"/>
-                        <mxPoint x="186" y="945" as="targetPoint"/>
+                        <mxPoint x="1200" y="760" as="sourcePoint"/>
+                        <mxPoint x="1230" y="755" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="138" value="bfs" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
-                    <mxGeometry x="126" y="945" width="120" height="60" as="geometry"/>
+                <mxCell id="187" value="存在dirtyLevel=dirty&lt;br&gt;的响应式依赖?" style="rhombus;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="715" width="160" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="139" value="7/11/15.继续执行上面逻辑" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="126" y="915" width="160" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="148" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#d6b656;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fillColor=#fff2cc;" parent="1" source="115" target="115" edge="1">
+                <mxCell id="188" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="187" target="194" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="451" y="485" as="sourcePoint"/>
-                        <mxPoint x="501" y="435" as="targetPoint"/>
+                        <mxPoint x="1280" y="715" as="sourcePoint"/>
+                        <mxPoint x="1370" y="600" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="351" y="505"/>
-                            <mxPoint x="331" y="465"/>
+                            <mxPoint x="1270" y="605"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="149" value="8/12.此时脏等级为maybeDirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="354" y="460" width="180" height="30" as="geometry"/>
+                <mxCell id="189" value="no" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1270" y="610" width="40" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="151" value="10/14.脏等级为noDirty，直接放回结果(停)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="-20" y="25" width="250" height="30" as="geometry"/>
+                <mxCell id="190" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="187" target="193" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1280" y="798" as="sourcePoint"/>
+                        <mxPoint x="1430" y="845" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1290" y="852.5"/>
+                        </Array>
+                    </mxGeometry>
                 </mxCell>
-                <mxCell id="161" value="14.修改moreSomeEffects._dirtyLevel&lt;br&gt;为dirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="80" y="775" width="220" height="40" as="geometry"/>
+                <mxCell id="191" value="yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1280" y="835" width="40" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="162" value="16.脏等级为noDirty，直接返回结果(停)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="346" y="480" width="230" height="30" as="geometry"/>
+                <mxCell id="206" value="" style="edgeStyle=none;html=1;strokeColor=#000000;fontColor=#000000;" parent="1" source="193" target="204" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="124" value="3/7.触发trigger" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="130" y="220" width="100" height="30" as="geometry"/>
+                <mxCell id="193" value="return true" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1385" y="820" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="194" value="自己是dirty?" style="rhombus;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1375" y="545" width="130" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="195" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="194" target="197" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1440" y="615" as="sourcePoint"/>
+                        <mxPoint x="1560" y="680" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1440" y="680"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="196" value="yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1420" y="655" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="197" value="return true" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1515" y="645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="198" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="194" target="200" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1450" y="445" as="sourcePoint"/>
+                        <mxPoint x="1570" y="515" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1440" y="500"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="199" value="no" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1425" y="490" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="200" value="return false" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1515" y="475" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="201" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="197" target="202" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1820" y="800" as="sourcePoint"/>
+                        <mxPoint x="1720" y="675" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="202" value="run()" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1730" y="645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="203" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="204" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1510" y="850" as="sourcePoint"/>
+                        <mxPoint x="1565" y="850" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="204" value="run()" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1580" y="820" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="205" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="204" target="207" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1820" y="800" as="sourcePoint"/>
+                        <mxPoint x="1770" y="850" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="207" value="通过getter获取新值，并清dirtyLevel" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1770" y="820" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="208" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="202" target="209" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1860" y="675" as="sourcePoint"/>
+                        <mxPoint x="1930" y="675" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="209" value="通过getter获取新值，并清dirtyLevel" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1900" y="645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="210" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="207" target="211" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1820" y="790" as="sourcePoint"/>
+                        <mxPoint x="1960" y="850" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="211" value="trigger副作用，设置副作用dirtyLevel为dirty" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1960" y="820" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="212" value="trigger副作用，设置副作用dirtyLevel为dirty" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="2080" y="645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="213" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="209" target="212" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1760" y="790" as="sourcePoint"/>
+                        <mxPoint x="1810" y="740" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="214" value="track当前调用" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="2260" y="645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="215" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="200" target="214" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1710" y="500" as="sourcePoint"/>
+                        <mxPoint x="1760" y="450" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1760" y="500"/>
+                            <mxPoint x="2320" y="510"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="216" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="212" target="214" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2040" y="690" as="sourcePoint"/>
+                        <mxPoint x="2090" y="640" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="217" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="211" target="214" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2100" y="855" as="sourcePoint"/>
+                        <mxPoint x="2785" y="995" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="2280" y="840"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="218" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="214" target="219" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="2110" y="690" as="sourcePoint"/>
+                        <mxPoint x="2440" y="675" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="219" value="返回值" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="2440" y="645" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="223" value="triggerEffects" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="475" y="1050" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="224" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="223" target="225" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="645" y="1100" as="sourcePoint"/>
+                        <mxPoint x="675" y="1080" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="225" value="遍历副作用列dep" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="645" y="1050" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="226" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="225" target="228" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="925" y="920" as="sourcePoint"/>
+                        <mxPoint x="825" y="1080" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="228" value="副作用dirtyLevel&amp;lt;dirtyLevel" style="rhombus;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="825" y="1040" width="190" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="229" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="223" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="535" y="960" as="sourcePoint"/>
+                        <mxPoint x="975" y="940" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="230" value="输入参数：dirtyLevel" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="995" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="231" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="228" target="232" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="925" y="925" as="sourcePoint"/>
+                        <mxPoint x="1035" y="995" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="925" y="995"/>
+                            <mxPoint x="985" y="995"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="232" value="dirtyLevel赋值给副作用dirtyLevel" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1035" y="965" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="233" value="" style="curved=1;endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="228" target="234" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="920" y="1210" as="sourcePoint"/>
+                        <mxPoint x="1035" y="1165" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="995" y="1130"/>
+                            <mxPoint x="1105" y="1130"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="234" value="触发副作用的trigger" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1205" y="1050" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="235" value="no" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="965" y="975" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="236" value="yes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1035" y="1130" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="238" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="232" target="234" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="955" y="1120" as="sourcePoint"/>
+                        <mxPoint x="1225" y="1120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="240" value="dirtyLevel = dirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="600" y="328" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="243" value="dirtyLevel = MaybeDirty" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1000" y="328" width="150" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="244" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="935" y="120" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="245" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="1385" y="120" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="246" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="244" target="104" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1070" y="250" as="sourcePoint"/>
+                        <mxPoint x="1120" y="200" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="247" value="" style="endArrow=classic;html=1;strokeColor=#000000;fontColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="245" target="115" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1400" y="240" as="sourcePoint"/>
+                        <mxPoint x="1400" y="260" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="249" value="访问value属性，调用get value()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="895" y="235" width="190" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="251" value="访问value属性，调用get value()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1390" y="230" width="190" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="252" value="调用get dirty()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="625" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="254" value="&lt;b&gt;computed变化顶层&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="985" y="70" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="257" value="&lt;b&gt;get value()调用逻辑&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1790" y="410" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="259" value="triggerEffects调用逻辑" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="820" y="910" width="150" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

@@ -29,6 +29,9 @@ class RefImpl<T> {
   ) {
     // isShallow表示浅层调用
     this._rawValue = __v_isShallow ? value : toRaw(value)
+    /*
+    *  其中toReactive()会判断value是不是对象，如果是将其用reactive包装，否则不做修改
+    */
     this._value = __v_isShallow ? value : toReactive(value)
   }
 
@@ -201,7 +204,7 @@ if (oldDep !== dep) {
 }
 ~~~
 
-**正常来说，我们的响应式数据绑定好副作用函数就可以实现响应式了，也就是上面的第一段代码，但是为什么还要执行第二段代码去实现副作用对响应式数据的绑定呢？这个疑问我们先做保留。。**
+**正常来说，我们的响应式数据绑定好副作用函数就可以实现响应式了，也就是上面的第一段代码，但是为什么还要执行第二段代码去实现副作用对响应式数据的绑定呢？这个疑问将在计算属性小节进行解答。**
 
 看完上面的代码我们还有一个非常重要的问题，activeEffect到底是怎么生成的？我们知道响应式数据需要绑定副作用函数，并且上面的逻辑也给出了响应式函数绑定副作用函数的具体逻辑，但是这些副作用函数是怎么产生的呢（activeEffect怎么来的）？我们在watch、computed中的执行逻辑是如何转变成副作用函数的？先看下面代码：
 
@@ -591,7 +594,17 @@ export function trigger(
 
 #### ref和reactive的区别解析
 
-我们从前面阅读ref和reactive的源码可以知道，**他们的底层逻辑都是一样的**，通过track和tragger实现响应式的管理，**其中reactive沿用了ref的track和tragger**，那么为什么在监听对象时使用reactive更合适呢？相信读到这里的朋友都发现了reactive有一个决定性的不同，**那就是它会给对象的每个key创建一个dep**，不像ref即使面对对象也是统一管理dep，这就造成ref如果对象的某个key发生了变化，它会将对象所有key所关联的dep都执行，而reactive则可以细粒度到具体的key的dep上，这在执行tragger的量级上就出现了变化，这就是监听对象时reactive比ref更好的原因。
+我们从前面阅读ref和reactive的源码可以知道，**他们的底层逻辑都是一样的**，通过track和tragger实现响应式的管理，**其中reactive沿用了ref的track和tragger,并且ref在遇到对象数据时也复用了reactive进行代理**，那么为什么在监听对象时使用reactive更合适呢？我们可以观察[ref源码](#refSource)的set value()方法，可以发现ref的赋值是直接替换掉整个reactive对象：
+
+~~~ts
+this._value = useDirectValue ? newVal : toReactive(newVal)
+~~~
+
+并不是针对单独的某个键进行修改，这样一旦发生修改就需要调用整体ref所绑定的副作用，而不是具体到某个key所绑定的副作用，所以它的运行效率相对于reactive只调用具体某个key的副作用是极大不如的。
+
+> 但是我们观察代码可以发现，vue3在创建原数据为对象的ref时，使用了reactive来进行包装，有的人可能会觉得多余，认为修改数据也是整个对象再重新绑定，并没有体现reactive的作用，但这或许暗涵深意：
+>
+> 说明未来reactive或许要被并入ref中，实现只通过ref就可以实现reactive修改数据时只调用key值相关依赖的效果。
 
 下面附加一个ref监听对象变化的原理：
 
@@ -620,9 +633,12 @@ export const hasChanged = (value: any, oldValue: any): boolean =>
 
 ![](.\image\computed.png)
 
-这里面涉及到一个schedular，是vue3的任务管理机制，会在后面讲解，现在只需要知道其能避免执行栈被撑爆。
+从上图我们可以知道几个重要信息：
 
-一般的访问流程如下图所示：
+- 当响应式数据发生改变时，其所属的副作用不会立刻去改变他们的值，而是修改其dirtyLevel属性为dirty，直到当被访问时才会从新计算值
+- 前面提到的副作用的deps就在这里起了作用，其用于计算属性检测其依赖的响应式数据是否是脏数据从而作为更改自己值的依据
+
+简化的计算属性访问流程如下图所示：
 
 ![](.\image\computed_simple.png)
 
@@ -631,8 +647,6 @@ export const hasChanged = (value: any, oldValue: any): boolean =>
 
 
 ### 问题解释
-
-#### 为什么副作用函数还要添加deps来管理响应式依赖？
 
 #### vue3的脏数据逻辑
 
