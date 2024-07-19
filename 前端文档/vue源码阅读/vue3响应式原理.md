@@ -177,7 +177,7 @@ export function trackEffect(
 
 为了方便理解，我们可以看看下图：
 
-![](C:\Users\Administrator\Desktop\笔记\image\vue_track.png)
+![](.\image\vue_track.png)
 
 该图表示的是副作用和响应式数据间的关系。
 
@@ -281,6 +281,8 @@ export function triggerRefValue(
 ~~~
 
 从上面可以知道，triggerRefValue是通过triggerEffects实现出发副作用的，triggerEffects的代码如下（剔除了一部分逻辑之外的代码）：
+
+<span id="triggerEffects"></span>
 
 ~~~ts
 export function triggerEffects(
@@ -644,13 +646,361 @@ export const hasChanged = (value: any, oldValue: any): boolean =>
 
 #### 监视器（watch）
 
+<span id="doWatch"></span>
 
+~~~ts
+function doWatch(
+  source: WatchSource | WatchSource[] | WatchEffect | object,
+  cb: WatchCallback | null,
+  {
+    immediate,
+    deep,
+    flush,
+    once,
+    onTrack,
+    onTrigger,
+  }: WatchOptions = EMPTY_OBJ,
+): WatchStopHandle {
+  if (cb && once) {
+    const _cb = cb
+    cb = (...args) => {
+      _cb(...args)
+      unwatch()
+    }
+  }
+
+  // 获取组件实例，并没有实际意义，只是通过callWithErrorHandling使报错能够标识到具体的组件
+  const instance = currentInstance
+  
+  // 处理reactive的getter(判断需不需要深度监听)
+  const reactiveGetter = (source: object) =>
+    deep === true
+      ? source 
+      : traverse(source, deep === false ? 1 : undefined)
+
+  let getter: () => any
+  let forceTrigger = false
+  let isMultiSource = false
+
+  /*
+  *  对监听的数据进行处理
+  *  1.ref自动解构；
+  *  2.reactive的情况；
+  *  3.数组（多个数据源的情况）的情况；
+  *  4.getter的情况；
+  */
+  if (isRef(source)) {
+    getter = () => source.value
+    forceTrigger = isShallow(source)
+  } else if (isReactive(source)) {
+    getter = () => reactiveGetter(source)
+    forceTrigger = true
+  } else if (isArray(source)) {
+    isMultiSource = true
+    forceTrigger = source.some(s => isReactive(s) || isShallow(s))
+    getter = () =>
+      source.map(s => {
+        if (isRef(s)) {
+          return s.value
+        } else if (isReactive(s)) {
+          return reactiveGetter(s)
+        } else if (isFunction(s)) {
+          return callWithErrorHandling(s, instance, ErrorCodes.WATCH_GETTER)
+        }
+      })
+  } else if (isFunction(source)) {
+    if (cb) {
+      // getter with cb
+      getter = () =>
+        callWithErrorHandling(source, instance, ErrorCodes.WATCH_GETTER)
+    } else {
+      // no cb -> simple effect
+      getter = () => {
+        if (cleanup) {
+          cleanup()
+        }
+        return callWithAsyncErrorHandling(
+          source,
+          instance,
+          ErrorCodes.WATCH_CALLBACK,
+          [onCleanup],
+        )
+      }
+    }
+  }
+  
+  let cleanup: (() => void) | undefined
+  let onCleanup: OnCleanup = (fn: () => void) => {
+    cleanup = effect.onStop = () => {
+      callWithErrorHandling(fn, instance, ErrorCodes.WATCH_CLEANUP)
+      cleanup = effect.onStop = undefined
+    }
+  }
+
+  // 处理深度监听
+  if (cb && deep) {
+    const baseGetter = getter
+    getter = () => traverse(baseGetter())
+  }
+
+  /*
+  *  处理旧值的情况：
+  *  判断是不是多数据源（数组）
+  *  INITIAL_WATCHER_VALUE为{},这是防止魔法数的写法
+  */
+  let oldValue: any = isMultiSource
+    ? new Array((source as []).length).fill(INITIAL_WATCHER_VALUE)
+    : INITIAL_WATCHER_VALUE
+  
+  /*
+  *  用于封装cb函数
+  */
+  const job: SchedulerJob = () => {
+    if (!effect.active || !effect.dirty) {
+      return
+    }
+    if (cb) {
+      // run的功能我就不再细说了，简单来说就做两件事：1.清dirtyLevel；2.执行effect的getter获取值
+      const newValue = effect.run()
+      if (
+        deep ||
+        forceTrigger ||
+        (isMultiSource
+          ? (newValue as any[]).some((v, i) => hasChanged(v, oldValue[i]))
+          : hasChanged(newValue, oldValue)) ||
+        (__COMPAT__ &&
+          isArray(newValue) &&
+          isCompatEnabled(DeprecationTypes.WATCH_ARRAY, instance))
+      ) {
+        // 防止cb重复执行
+        if (cleanup) {
+          cleanup()
+        }
+        callWithAsyncErrorHandling(cb, instance, ErrorCodes.WATCH_CALLBACK, [
+          newValue,
+          // pass undefined as the old value when it's changed for the first time
+          oldValue === INITIAL_WATCHER_VALUE
+            ? undefined
+            : isMultiSource && oldValue[0] === INITIAL_WATCHER_VALUE
+              ? []
+              : oldValue,
+          // 可以初始化cleanup，用于停止cb的执行
+          onCleanup,
+        ])
+        oldValue = newValue
+      }
+    } else {
+      // watchEffect
+      effect.run()
+    }
+  }
+
+  job.allowRecurse = !!cb
+
+  // 控制执行时机，是flush的底层逻辑
+  let scheduler: EffectScheduler
+  if (flush === 'sync') {
+    scheduler = job as any // the scheduler function gets called directly
+  } else if (flush === 'post') {
+    scheduler = () => queuePostRenderEffect(job, instance && instance.suspense)
+  } else {
+    // default: 'pre'
+    job.pre = true
+    if (instance) job.id = instance.uid
+    scheduler = () => queueJob(job)
+  }
+
+  // 创建副作用，类似计算属性，cb存在scheduler中
+  const effect = new ReactiveEffect(getter, NOOP, scheduler)
+
+  // 获取activeEffect,用于处理取消监听的逻辑
+  const scope = getCurrentScope()
+  const unwatch = () => {
+    effect.stop()
+    if (scope) {
+      remove(scope.effects, effect)
+    }
+  }
+
+  if (cb) {
+    // 初始化立刻执行
+    if (immediate) {
+      job()
+    } else {
+      oldValue = effect.run()
+    }
+    // 回调调用时机设置
+  } else if (flush === 'post') {
+    queuePostRenderEffect(
+      effect.run.bind(effect),
+      instance && instance.suspense,
+    )
+  } else {
+    effect.run()
+  }
+  return unwatch
+}
+~~~
+
+上面已经把doWatch的基本功能解释的差不多了，整体watch的功能应该都清晰了：**也就是判断是否有一些特殊字段（deep、immediate），有就处理，没有就正常绑定回调到effect上，等待依赖的响应式数据变化后被trigger**。
+
+但可能还有一些小点比较难理解，下面将一一解决这些小点：
+
+- **cleanup**：这个函数用于防止回调重复执行，主要的逻辑在job中，类似防抖逻辑
+
+- **oldValue**：有人可能会疑惑oldValue是怎么保存的，doWatch执行完不就要被回收了吗？实际上vue3用了闭包的原理，说实话写的挺绕，这也是vue3的特色了，oldValue被job使用，job又被放入effect，effect又被放入trigger，总之就是能被标记到。
+
+- **traverse**：先上代码吧
+
+  ~~~ts
+  export function traverse(
+    value: unknown,
+    depth = Infinity,
+    seen?: Set<unknown>,
+  ) {
+    // 不是对象或深度为0（为基本数据类型），则直接返回值
+    if (depth <= 0 || !isObject(value) || (value as any)[ReactiveFlags.SKIP]) {
+      return value
+    }
+    
+    // 记录标记过的值，标记过直接返回结果
+    seen = seen || new Set()
+    if (seen.has(value)) {
+      return value
+    }
+    seen.add(value)
+    
+    // 开始处理层，递归处理
+    depth--
+    if (isRef(value)) {
+      traverse(value.value, depth, seen)
+    } else if (isArray(value)) {
+      for (let i = 0; i < value.length; i++) {
+        traverse(value[i], depth, seen)
+      }
+    } else if (isSet(value) || isMap(value)) {
+      value.forEach((v: any) => {
+        traverse(v, depth, seen)
+      })
+    } else if (isPlainObject(value)) {
+      for (const key in value) {
+        traverse(value[key], depth, seen)
+      }
+      for (const key of Object.getOwnPropertySymbols(value)) {
+        if (Object.prototype.propertyIsEnumerable.call(value, key)) {
+          traverse(value[key as any], depth, seen)
+        }
+      }
+    }
+    return value
+  }
+  ~~~
+
+  看了代码，我们发现其实traverse就起到了访问值的作用，也就是访问所有被监听的响应式数据，让其trigger内添加watch的回调
+
+- **forceTrigger**：查看代码可以发现forceTrigger为true的情况一般为这两种`isShallow(source)`、`isReactive(source)`也就是为浅响应式或为reactive包装的数据时为true，那么它为true引发了什么后果呢？查看代码发现看不出逻辑，后来我查找了提交历史`390589e`发现这个是为了用于区分常规ref，当其值没变时不应该触发回调，是处理bug的一个功能，有兴趣的可以去该提交历史查看。
+- **为什么reactive需要用getter包装**：其实很简单，为什么ref不用包装？因为ref如果不访问到value属性，他就不会触发trigger去添加副作用，而reactive不行，只要被使用就会将副作用加入trigger，这时候可能副作用还没创建，算是一个优化策略。
 
 ### 问题解释
 
 #### vue3的脏数据逻辑
 
-#### schedule
+> 我们发现在vue中，响应式变化后会先将副作用的dirtyLevel变为dirty才去触发副作用trigger，这是为什么呢？
+
+从我们上面阅读代码的经验可以看出，dirtyLevel主要是用于计算属性的，watch基本没有关于dirty的逻辑。
+
+既然如此，我就就来分析分析计算属性。
+
+假设计算属性不使用dirtyLevel会发生什么事？
+
+**也就是假设不判断dirtyLevel，每次有人使用它时，都会直接调用run()方法去获取值，而如果加了dirtyLevel，就起到一个缓存的效果，被调用时只有依赖的响应式数据发生变化才会调用run()方法。**
+
+但是有的人可能会疑惑，即使不缓存，它每次都去调用run()获取结果真的会对性能有很大的影响吗？
+
+我们可以看看run()方法的逻辑：
+
+~~~ts
+ run() {
+    this._dirtyLevel = DirtyLevels.NotDirty
+    if (!this.active) {
+      return this.fn()
+    }
+    let lastShouldTrack = shouldTrack
+    let lastEffect = activeEffect
+    try {
+      shouldTrack = true
+      activeEffect = this
+      this._runnings++
+      preCleanupEffect(this)
+      return this.fn()
+    } finally {
+      postCleanupEffect(this)
+      this._runnings--
+      activeEffect = lastEffect
+      shouldTrack = lastShouldTrack
+    }
+  }
+~~~
+
+可以发现能造成性能影响的也就是调用this.fn()，也就是调用getter函数了。而每次获取ref的值时，ref都会触发track，但是实际上vue3中写了逻辑，如果副作用被track过就不会再被track了。而且使用的也是散列判断，几乎不会太耗性能。
+
+那也就是run()方法的调用并不会对性能有过多影响，但是dirtyLevel的作用除了作为run()方法的前置外，还作为trigger的前置，既然run()的执行对性能不会有太大的影响，**那么就是trigger的执行会对性能有很大的影响**
+
+我们查看[triggerEffects的代码](#triggerEffects)，**可以triggerEffects每次被调用都会遍历副作用并执行这些副作用的trigger，我们知道底层副作用的trigger基本就是和页面绑定了，也就是每次执行这些副作用都会造成页面的再渲染，而这个渲染过程就是性能降低的罪魁祸首。**
+
+#### scheduler
+
+> 在[triggerEffects的代码](#triggerEffects)中，我们可以发现存在一个scheduler的逻辑，这个scheduler的作用究竟是什么呢？
+
+我们需要追根溯源，找出schedular是在哪出现的，发现它其实是作为副作用类被实例化的第三个参数所生成的：
+
+~~~ts
+export class ReactiveEffect<T = any> {
+	constructor(
+	    public fn: () => T,
+	    public trigger: () => void,
+	    public scheduler?: EffectScheduler,
+	    scope?: EffectScope,
+	  ) {
+	    recordEffectScope(this, scope)
+	  }
+}
+~~~
+
+计算属性、监视器等各种作为副作用的生成都需要通过new ReactiveEffect()，而计算属性对new ReactiveEffect()的调用并没有传入scheduler，所以基本可以判断scheduler和计算属性没有关系了，有关系的就只有watch了。
+
+我们可以阅读[watch源码](#doWatch)发现scheduler实际上就是监视器的cb。再观察scheduler的生成逻辑：
+
+~~~ts
+let scheduler: EffectScheduler
+if (flush === 'sync') {
+  scheduler = job as any // the scheduler function gets called directly
+} else if (flush === 'post') {
+  scheduler = () => queuePostRenderEffect(job, instance && instance.suspense)
+} else {
+  // default: 'pre'
+  job.pre = true
+  if (instance) job.id = instance.uid
+  scheduler = () => queueJob(job)
+}
+~~~
+
+发现它也就是作为watch的flush被使用，flush的作用是什么？确定cb的执行时机，比如`flush: 'post'`就是在updated之后执行，`flush: 'sync'`就是在beforeUpdate之后执行。
+
+那其实我们就很明白了，scheduler就如同其字面意思一样，是一个调度员。用于管理副作用的执行时机。
+
+下图是具体scheduler执行流程：
+
+![](.\image\scheduler.png)
+
+然后具体scheduler又有对应的执行栈，从flush原理就可看出来，实现使cb在vue的不同生命周期执行的效果，这里就不过多赘述了。
 
 #### 引入activeEffect的作用
 
+> 在阅读响应式原理时，我们会被activeEffect的引入弄蒙，为什么vue要引入这个对象，而不是直接将副作用加入track就完事了？
+
+其实这个涉及到单例涉及模式的好处，使副作用可控且数据流单一，如果我们不引入activeEffect，副作用漫天飞，这样不利于维护和管理。
+
+## 参考文献
+
+[vue源码](https://github.com/vuejs/core.git)
