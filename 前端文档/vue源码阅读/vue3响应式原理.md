@@ -1,3 +1,9 @@
+## 导读
+
+本文内容属于vue3源码阅读合集的一个章节，vue3源码阅读包含了从响应式原理到虚拟dom原理等一系列内容，能帮助读者深入的理解vue3的工作原理，对入门和进阶前端技术都会有所帮助。
+
+[点我去到vue3源码阅读导览页面~~](https://www.unstoppable840.cn/article/9e093c80-4af6-49c0-b9fe-09f393051006)
+
 ## VUE3响应式原理
 
 > 代码分析主要体现在注释上，不爱看注释的朋友们悲（😢
@@ -596,7 +602,7 @@ export function trigger(
 
 #### ref和reactive的区别解析
 
-我们从前面阅读ref和reactive的源码可以知道，**他们的底层逻辑都是一样的**，通过track和tragger实现响应式的管理，**其中reactive沿用了ref的track和tragger,并且ref在遇到对象数据时也复用了reactive进行代理**，那么为什么在监听对象时使用reactive更合适呢？我们可以观察[ref源码](#refSource)的set value()方法，可以发现ref的赋值是直接替换掉整个reactive对象：
+我们从前面阅读ref和reactive的源码可以知道，**他们的底层逻辑都是一样的**，通过track和tragger实现响应式的管理，**其中reactive沿用了ref的track和tragger,并且ref在遇到对象数据时也复用了reactive进行代理**，那么为什么在监听对象时使用reactive更合适呢？我们可以观察[ref源码](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902#refSource)的set value()方法，可以发现ref的赋值是直接替换掉整个reactive对象：
 
 ~~~ts
 this._value = useDirectValue ? newVal : toReactive(newVal)
@@ -610,7 +616,7 @@ this._value = useDirectValue ? newVal : toReactive(newVal)
 
 下面附加一个ref监听对象变化的原理：
 
-通过观察[ref源码](#refSource)我们可以发现set方法中利用了hasChanged函数，下面我们看看hasChanged的原理：
+通过观察[ref源码](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902#refSource)我们可以发现set方法中利用了hasChanged函数，下面我们看看hasChanged的原理：
 
 ~~~ts
 export const hasChanged = (value: any, oldValue: any): boolean =>
@@ -946,11 +952,11 @@ function doWatch(
 
 那也就是run()方法的调用并不会对性能有过多影响，但是dirtyLevel的作用除了作为run()方法的前置外，还作为trigger的前置，既然run()的执行对性能不会有太大的影响，**那么就是trigger的执行会对性能有很大的影响**
 
-我们查看[triggerEffects的代码](#triggerEffects)，**可以triggerEffects每次被调用都会遍历副作用并执行这些副作用的trigger，我们知道底层副作用的trigger基本就是和页面绑定了，也就是每次执行这些副作用都会造成页面的再渲染，而这个渲染过程就是性能降低的罪魁祸首。**
+我们查看[triggerEffects的代码](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902#triggerEffects)，**可以triggerEffects每次被调用都会遍历副作用并执行这些副作用的trigger，我们知道底层副作用的trigger基本就是和页面绑定了，也就是每次执行这些副作用都会造成页面的再渲染，而这个渲染过程就是性能降低的罪魁祸首。**
 
 #### scheduler
 
-> 在[triggerEffects的代码](#triggerEffects)中，我们可以发现存在一个scheduler的逻辑，这个scheduler的作用究竟是什么呢？
+> 在[triggerEffects的代码](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902#triggerEffects)中，我们可以发现存在一个scheduler的逻辑，这个scheduler的作用究竟是什么呢？
 
 我们需要追根溯源，找出schedular是在哪出现的，发现它其实是作为副作用类被实例化的第三个参数所生成的：
 
@@ -969,7 +975,7 @@ export class ReactiveEffect<T = any> {
 
 计算属性、监视器等各种作为副作用的生成都需要通过new ReactiveEffect()，而计算属性对new ReactiveEffect()的调用并没有传入scheduler，所以基本可以判断scheduler和计算属性没有关系了，有关系的就只有watch了。
 
-我们可以阅读[watch源码](#doWatch)发现scheduler实际上就是监视器的cb。再观察scheduler的生成逻辑：
+我们可以阅读[watch源码](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902#doWatch)发现scheduler实际上就是监视器的cb。再观察scheduler的生成逻辑：
 
 ~~~ts
 let scheduler: EffectScheduler
