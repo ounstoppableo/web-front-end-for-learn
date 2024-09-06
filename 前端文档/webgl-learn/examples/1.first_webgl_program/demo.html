@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+    <script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
+</head>
+<style>
+    @import url("https://webglfundamentals.org/webgl/resources/webgl-tutorials.css");
+
+    body {
+        margin: 0;
+    }
+
+    canvas {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+    }
+
+    #ui {
+        width: 200px;
+    }
+</style>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="uiContainer">
+        <div id="ui">
+            <div id="x"></div>
+            <div id="y"></div>
+        </div>
+    </div>
+</body>
+<script id="vertex-shader-2d" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+
+    uniform vec2 u_resolution;
+    
+    void main() {
+       // 转换长方形的像素点 到 0.0 to 1.0
+       vec2 zeroToOne = a_position / u_resolution;
+    
+       // 再转换成 0->1 to 0->2
+       vec2 zeroToTwo = zeroToOne * 2.0;
+    
+       // 然后转换成剪裁空间 0->2 to -1->1
+       vec2 clipSpace = zeroToTwo - 1.0;
+
+       // * vec2(1, -1)表示y坐标反转，原来y的负轴是向下的，我们把它置反，这样原来在底部的图形就跑到顶部了
+       // 后面两个占位分别是z和w，z表示三维坐标轴，w表示4维坐标轴，这里用不到就给默认值占位      
+       gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+    }
+</script>
+<script id="fragment-shader-2d" type="x-shader/x-fragment">
+    precision mediump float;
+
+    uniform vec4 u_color;
+    
+    void main() {
+       gl_FragColor = u_color;
+    }
+</script>
+<script>
+    function main() {
+        const canvas = document.getElementById("canvas");
+        const gl = canvas.getContext("webgl");
+        if (!gl) return;
+
+        // 创建webgl Program
+        const program = webglUtils.createProgramFromScripts(gl, ["vertex-shader-2d", "fragment-shader-2d"]);
+
+        // 获取glsl定义的变量到本地
+        const positionLocation = gl.getAttribLocation(program, 'a_position');
+        const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+        const colorLocation = gl.getUniformLocation(program, 'u_color');
+
+        // 创建buffer
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+        // 定义基本属性
+        const translation = [0, 0];
+        const width = 100;
+        const height = 30;
+        const color = [Math.random(), Math.random(), Math.random(), 1];
+
+        //绘制
+        drawScene();
+
+        //创建slider控制位移
+        webglLessonsUI.setupSlider('#x', { slide: updatePosition(0), max: gl.canvas.width });
+        webglLessonsUI.setupSlider('#y', { slide: updatePosition(1), max: gl.canvas.height });
+        function updatePosition(index) {
+            return function (event, ui) {
+                translation[index] = ui.value;
+                drawScene();
+            }
+        }
+
+        function drawScene() {
+            webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+
+            // 告诉webgl视口的范围
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+            // // 清空画布
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            // 连接program
+            gl.useProgram(program);
+
+            // 启用attribuffer读取功能
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+            // 创建长方形点的buffer数据
+            setRectangle(gl, translation[0], translation[1], width, height);
+
+            // 定义attribute从positionBuffer中获取数据的方式，也就是a_position每次会获取到的数据，下面的定义我们可以想象a_position每次会取两个值作为vec2
+            const size = 2;  // 每次迭代两个单元
+            const type = gl.FLOAT;  // 读取类型为float
+            const normalize = false;  // 不归一化
+            const stride = 0;  // 0 = 每次迭代向前移动size * sizeof(type)去获取下一个位置
+            const offset = 0;  // 从0偏移位置开始读取
+            gl.vertexAttribPointer(positionLocation, size, type, normalize, stride, offset);
+
+            // 设置resolution
+            gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
+            
+            // 设置color
+            gl.uniform4fv(colorLocation, color);
+
+            // 绘制
+            const primitiveType = gl.TRIANGLES;
+            const count = 6;
+            gl.drawArrays(primitiveType, offset, count);
+        };
+
+    }
+    function setRectangle(gl, x, y, width, height) {
+        const x1 = x;
+        const x2 = x + width;
+        const y1 = y;
+        const y2 = y + height;
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+
+            // 想象成画两个三角形，因为webgl的基本单元是三角形
+            new Float32Array([
+                x1, y1,
+                x2, y1,
+                x1, y2,
+                x1, y2,
+                x2, y1,
+                x2, y2
+            ]),
+            gl.STATIC_DRAW
+        );
+    }
+    main();
+
+    // 注意点：
+    // 1.createBuffer()、bindBuffer()、bufferData()是一套的，bindBuffer连接了createBuffer()和bufferData()，bufferData()根据绑定点（第一个参数）操作bindBuffer()为绑定点（第一个参数）绑定的buffer数据
+</script>
+
+</html>
