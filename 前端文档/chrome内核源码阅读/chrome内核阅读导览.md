@@ -10,8 +10,8 @@ chrome是google旗下的浏览器，也是程序员最喜欢使用的浏览器�
 
 ### 目录
 
-1. [浏览器内核划分]()
-2. [chrome内核源码下载]()
+1. [浏览器内核发展历程](https://www.unstoppable840.cn/article/44f473bc-2022-4c30-9eb3-93292202631e)
+2. [chrome内核源码下载](https://www.unstoppable840.cn/article/0c430c8f-e230-430b-bff2-67f7c34b7915)
 3. [chrome源码文件树介绍]()
 4. [v8引擎和chrome内核的关系]()
 5. [javascript是如何编译的——v8引擎处理过程]()
