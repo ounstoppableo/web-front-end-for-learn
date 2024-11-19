@@ -8,10 +8,8 @@
 
 ### 目录
 
-1. [typescript是如何工作的]()
-2. [typescript类型推断功能]()
-3. [typescript类型操作&类型工具函数]()
-4. [typescript泛型]()
-5. [typescript的模块封装]()
-6. [typescript的声明文件]()
-7. [tsconfig.json的配置]()
+1. [typescript泛型](https://www.unstoppable840.cn/article/350af479-e3c9-4b1e-9ad0-c2ae06e027a6)
+2. [typescript类型操作&类型工具函数](https://www.unstoppable840.cn/article/0ae68145-c38c-4aee-939e-ade6250c504e)
+3. [typescript的模块和命名空间](https://www.unstoppable840.cn/article/d4f7af1d-d0da-4b9e-8e2a-40e3e246908f)
+4. [typescript的声明文件](https://www.unstoppable840.cn/article/e8a41ff4-0322-4e73-ab18-91351489f342)
+5. [tsconfig.json的配置](https://www.unstoppable840.cn/article/785ff61b-b619-4e56-8160-48bb8f70c16c)

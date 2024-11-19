@@ -1009,4 +1009,4 @@ if (flush === 'sync') {
 
 ## 参考文献
 
-[vue源码](https://github.com/vuejs/core.git)
+[vue.js core](https://github.com/vuejs/core.git)

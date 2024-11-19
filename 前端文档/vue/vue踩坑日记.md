@@ -407,3 +407,45 @@ deep只是稍微改变了一下属性选择器的位置，就可以选择到我�
 ~~~
 
 以上就是deep的解决方法，实际上现实远远没有那么简单，我就遇到过v-data-[hash]被打飞了，怎么也打不到根元素上，导致样式布置不了，所以诸位在使用deep时还是需要小心。
+
+#### defineAsyncComponent性能优化
+
+我们通过mounted生命周期去渲染一些真实dom的时候会遇到页面卡顿的情况，比如我通过echarts去渲染50个图表，我们知道这个操作一般都是在vue的模板中创建一个容器，然后echarts通过id获取容器然后去操作真实dom，这时候就会出现页面卡顿的情况，即使使用v-if去延迟渲染也没有效果。
+
+**原因**：那是因为引入的组件会存在一个初始化的过程，即使是使用了v-if也会被初始化，也只就会被mount，这时mount生命周期就会被执行，然后就会渲染chart造成页面卡顿。
+
+**解决方法**：通过使用defineAsyncComponent去按需引入。
+
+#### 响应式初始化的值为另一个响应式的问题
+
+我们看一个例子：
+
+~~~vue
+<script setup>
+import { ref, reactive, watch } from "vue";
+const a = ref(1);
+const b = reactive({ a: a.value });
+watch(
+  () => b.a,
+  (newVal) => {
+    console.log(newVal);
+  },
+  {
+    deep: true,
+  }
+);
+const handleClick = () => {
+  a.value++;
+};
+</script>
+
+<template>
+  <button @click="handleClick">+1</button>
+  <div>{{ a }}</div>
+</template>
+~~~
+
+我们定义了一个响应式a，然后将a的值作为b的初始化的值，此时如果改变a的值，b是否也会根据a的变化而变化？
+
+我们在这里使用了watch来监听b的变化，但是遗憾的是**a的变化并不会引起b的变化**。
+

@@ -805,19 +805,21 @@ const processCommentNode: ProcessTextOrCommentFn = (
 
 ![](.\image\patch流程图.png)
 
+##### processElement与processComponent
+
 在patch中，核心的逻辑就是processElement和processComponent了，其他的如comment、static、text的逻辑十分简单，而suspense、teleport又存在复用processElement的逻辑，所以下面主要是针对processElement、processComponent的逻辑进行阐述。
 
 processElement:
 
 ![](.\image\processElement.png)
 
-其中patchKeyedChildren和patchUnkeyedChildren是diff的逻辑，我会在给出processComponent的流程图后再具体来看。
+processElement由图可知其主要更新逻辑是`n1!==null`的时候，其中dynamicChildren主要关注的是一些动态子项，比如v-if、v-show、v-for等生成的元素，因为其复用了patch所以不是主要分析分支。而patchKeyedChildren和patchUnkeyedChildren是diff的实现逻辑，是主要分析内容，会在下一小节具体分析。
 
 processComponent:
 
 ![](.\image\processComponent.png)
 
-可以发现图中需要特别了解的函数主要有componentUpdateFn，move可以看成是对insert进行了一个封装，逻辑不复杂，这里就不再赘述。下面将给出包括processElement的patchKeyedChildren和patchUnkeyedChildren与componentUpdateFn总共三种函数的执行流程图：
+可以发现图中需要特别了解的函数主要有componentUpdateFn、shouldUpdateComponent、move，move可以看成是对insert进行了一个封装，逻辑不复杂，这里就不再赘述，而shouldUpdateComponent实际上就是监听props、子组件是否发生变化，发生就更新，逻辑也不复杂。其实主要的更新逻辑和processElement一样，也是`n1!==null`的时候，不该更新的时候就把元素（el）复制一遍就好了，应该更新则执行instance.update()，这个函数的主要作用在图中没有画全，它内部也是执行了componentUpdateFn，所以接下来我们看看componentUpdateFn。
 
 componentUpdateFn:
 
@@ -825,15 +827,420 @@ componentUpdateFn:
 
 
 
+我们可以发现其实componentUpdateFn的主要作用就是修改了instance.subTree，并且递归使用patch去处理子组件。我们可以将组件的渲染想象成一棵树，树的根是组件虚拟dom，他的子节点就会有Element的虚拟dom，也会有其他组件虚拟dom，Element的虚拟dom会通过processElement转换成真实dom，而组件虚拟dom则不断递归生成Element的虚拟dom后再转换成真实dom，具体实现可以阅读`组件是如何转换成真实dom`章节，而subTree就是组件虚拟dom patch遍历的入口，如上图所示一样。
+
+##### patchKeyedChildren（diff算法）
+
+现在来进入我们的重头戏，diff算法吧！
+
+因为是算法，所以我们就不画流程图了，让我们更专注于算法的作用上：
+
+首先我们知道，diff肯定是有两个输入，我们将这两个输入命名为`prev`和`next`，而这两个都是**数组**的形式，因为不是数组已经在进入patchKeyedChildren前就被处理了。
+
+我们先预设一些变量：
+
+> i = 0 用于记录最早不相同节点的坐标
+>
+> e1 = prev.length - 1 
+>
+> e2 = next.length - 1
+
+diff流程有5个步骤，这五个步骤是同步（sync）、顺序执行的：
+
+- 从start开始对比，选出不同位置的下标：
+
+  > 假设：
+  >
+  > (a b) c
+  > (a b) d e
+  >
+  > 每走一步 i ++
+  >
+  > 并且每走一步都直接`更新`
+
+- 从end开始对比
+
+  > 假设：
+  >
+  >  a (b c)
+  >
+  >  d e (b c)
+  >
+  > 每走一步 e1-- 和 e2 --
+  >
+  > 并且每走一步都直接`更新`
+
+- 如果前两个对比完后，刚好`prev`为`next`的子项时，也就是：`i>e1`且`i<=e2`
+
+  > (a b)
+  >
+  > (a b) c
+  >
+  > i = 2, e1 = 1, e2= 2 
+  >
+  > (a b)
+  >
+  > c (a b)
+  >
+  > i = 0,  e1 = -1, e2 = 0
+  >
+  > 直接`添加`next的节点
+
+- 如果前两个对比完后，刚好`next`为`prev`的子项时，也就是：`i<=e1`且`i>e2`
+
+  > (a b) c
+  >
+  > (a b)
+  >
+  > i = 2, e1 = 2, e2 = 1
+  >
+  >  a (b c)
+  >
+  > (b c)
+  >
+  > i = 0, e1 = 0, e2 = -1
+  >
+  > 直接`删除`prev的节点
+
+- 之后就是没有那么好运的情况了，比如：
+
+  > \[i ... prev.length + 1]: a b [c d e] f g
+  >
+  > \[i ...  next.length + 1]: a b [e d c h] f g
+  >
+  > i = 2, e1 = 4, e2 = 5
+
+  那怎么办呢？
+
+  - 首先预设一些变量
+
+    >  s1 = i  --  prev未操作序列的开始位置
+    >
+    >  s2 = i  --  next未操作序列的开始位置
+    >
+    > keyToNewIndexMap = new Map()  --  对next建立一个key与index的：Map<PropertyKey, number>
+    >
+    > newIndexToOldIndexMap = new Array(next.length - s2 + 1)并初始化为0  --  用于记录next中的哪些节点在旧节点序列中存在
+
+  - 遍历prev未操作序列，设 i 为索引
+
+    - 查看prev里拥有key的节点是否在next中出现（直接对比key，效率高），通过keyToNewIndexMap找到其出现的下标设为newIndex；
+
+      对于没有key的prev节点则通过全量比较（isSameVNodeType），查看其是否存在于next中，会比较消耗资源，找到其出现的下标设为newIndex
+
+    - 如果不存在则`删除`该节点；
+
+      如果存在则`更新`，并且更新newIndexToOldIndexMap[newIndex - s2] = i + 1（这里是i+1的原因主要是避免0下标的情况，值加多少本身不会对结果有影响，可参考下面步骤），并记录此节点需要被移动（判断新节点下标是否大于等于迄今为止最大的新节点下标，如果满足则刷新迄今为止最大的节点，否则记录为需要移动，简单来说：**如果新节点下标违反递增顺序则需要被移动**）
+
+    - 如果还没遍历完prev，但是更新过的节点数已经大于next的未操作节点数了，此时就将还没遍历的prev未操作节点全删除
+
+  - 做完上述循环之后，我们只是更新了prev中的节点信息，但是位置并没有和next保持一致，下面就来移动prev的位置（到此步骤我们已经能确保prev中不存在next中没有的节点了，也就是已经删完多余节点了）
+
+  - 根据newIndexToOldIndexMap构建一个**以索引为值的**最长递增子序列（比如对于[2,3,4,1]，那么创建最长递增子序列为[0,1,2]）
+
+  - 逆向遍历next未操作序列，设 i 为索引
+
+    - 如果newIndexToOldIndexMap[i]为0，说明此位置没有prev的节点被更新（next的该节点为全新添加），直接`插入`next[s2 + i]（也就是next未操作序列中处于 i 的节点）
+    - 如果newIndexToOldIndexMap[i]不为0，说明此位置有prev的节点被更新，此时执行`move`操作（判断 i 是否在递增子序列，在则不动，不在则执行`move`）。
+
+  > 在上面的逻辑中，有个最长递增子序列的问题，为什么要按照最长递增子序列来进行判断呢？
+  >
+  > 我们可以想象 a b d c e f 和 b d c e f a这个情况：
+  >
+  > 我们知道b c d e f是最长递增子序列，如果我们不进行这个判断，那么每读到一个newIndexToOldIndexMap[i]不为0，都进行move，那么这种情况我们需要移动n次，而使用最长递增子序列就只需要移动 1 次。
+
+  > 其中move操作实际上就是insertBefore操作，插入到anchor之前的位置。**注意**：大家一定要弄清楚原生insertBefore的功能，如果给定的节点已经存在于文档中，`insertBefore()` 会将其从当前位置移动到新位置。一开始我以为insertBefore只有插入功能，所以在这一块浪费了很长时间，没想到它还有删除功能。。
+
+  > 以上所涉及的操作有`更新`、`添加`、`删除`、`move`，其中`更新`、`添加`都是利用patch递归来实现的。
+
+关于前四步的逻辑很简单，这里就不画图表示了，下面将给出第五步的图示：
+
+![](.\image\Snipaste_2024-11-18_13-52-31.jpg)
+
+我们以上图为例子，执行以下第五步骤。
+
+- 首先预设变量的构建：
+
+  ![](.\image\Snipaste_2024-11-18_14-00-23.jpg)
+
+- 遍历prev，修改newIndexToOldIndexMap：
+
+  ![](.\image\Snipaste_2024-11-18_14-11-45.jpg)
+
+- 创建索引最长递增子序列
+
+  最长递增子序列为[2,3,4,5,6]，其索引为[0,1,2,5,6]，令j = [0,1,2,5,6].length = 5
+
+- move操作，其中anchor为next[s2 + i + 1]
+
+  ![](.\image\Snipaste_2024-11-18_14-17-33.jpg)
+
+  此时到f的i为6，存在于递增子序列，不变：
+
+  ![](.\image\Snipaste_2024-11-18_14-20-30.jpg)
+
+  此时到e的i为5，存在于递增子序列，不变：
+
+  ![](.\image\Snipaste_2024-11-18_14-22-31.jpg)
+
+  此时到g的i为4，不存在于递增子序列，move且j --：
+
+  ![](.\image\Snipaste_2024-11-18_14-32-21.jpg)
+
+  此时可以看到anchor指向e，我们执行`prev.insertBefore(g,e)`，也就是把g放到e前面：
+
+  ![](.\image\Snipaste_2024-11-18_14-34-29.jpg)
+
+  此时到a的i为3，不存在于最长递增子序列，move且j --：
+
+  ![](.\image\Snipaste_2024-11-18_14-37-10.jpg)
+
+  此时可以看到anchor指向g，我们执行`prev.insertBefore(a,g)`，也就是把a放到g前面：
+
+  ![](.\image\Snipaste_2024-11-18_14-38-36.jpg)
+
+  然后剩下的都在递增子序列，这里就不一一演示了：
+
+  ![](.\image\Snipaste_2024-11-18_14-39-34.jpg)
+
+##### patchUnkeyedChildren
+
+patchUnkeyedChildren的代码不难，我们直接看代码吧：
+
+~~~ts
+const patchUnkeyedChildren = (
+    c1: VNode[],
+    c2: VNodeArrayChildren,
+    container: RendererElement,
+    anchor: RendererNode | null,
+    parentComponent: ComponentInternalInstance | null,
+    parentSuspense: SuspenseBoundary | null,
+    namespace: ElementNamespace,
+    slotScopeIds: string[] | null,
+    optimized: boolean,
+  ) => {
+    c1 = c1 || EMPTY_ARR
+    c2 = c2 || EMPTY_ARR
+    const oldLength = c1.length
+    const newLength = c2.length
+    const commonLength = Math.min(oldLength, newLength)
+    let i
+    // 一一替换
+    for (i = 0; i < commonLength; i++) {
+      const nextChild = (c2[i] = optimized
+        ? cloneIfMounted(c2[i] as VNode)
+        : normalizeVNode(c2[i]))
+      patch(
+        c1[i],
+        nextChild,
+        container,
+        null,
+        parentComponent,
+        parentSuspense,
+        namespace,
+        slotScopeIds,
+        optimized,
+      )
+    }
+    // 老的多删老的
+    if (oldLength > newLength) {
+      // remove old
+      unmountChildren(
+        c1,
+        parentComponent,
+        parentSuspense,
+        true,
+        false,
+        commonLength,
+      )
+    // 新的多插入新的
+    } else {
+      // mount new
+      mountChildren(
+        c2,
+        container,
+        anchor,
+        parentComponent,
+        parentSuspense,
+        namespace,
+        slotScopeIds,
+        optimized,
+        commonLength,
+      )
+    }
+  }
+~~~
+
+patchUnkeyedChildren就很粗暴，这里我们可以看到主要是在commonLength这效率会很低，因为它会将每个节点都直接替换掉。
+
+##### 小结
+
+很多读者可能很难看懂上面的逻辑，而博主也确实有的地方处理的不太好，所以在理解性上可能会存在一定的不足，一个**最佳实践**就是：**结合源代码去阅读**。
+
+### 组件是如何转换成真实dom的
+
+从processElement中我们可以知道，vnode可以通过createElement转换成真实dom，其实组件也是借助了processElement生成的真实dom，组件的基本组成单元就是element vnode，只是其多了一个组件vnode这样的抽象进行代理，所以看起来才比较隐晦。组件vnode的结构可以参考下图：
+
+
+
+![](.\image\Snipaste_2024-11-18_16-12-59.jpg)
+
+组件的结构类似这样，但是其实其中有一个小错误，那就是子节点不应该直接连接到组件，而应该是这样：
+
+![](.\image\Snipaste_2024-11-18_16-22-16.jpg)
+
+其实就对应于vue不允许多根存在template中，不过现在已经通过fragment解决了这个问题，但是这里不谈，引出上图的模式也是为了让组件vnode的结构更直观，组件vnode实际上就是一个抽象，我们完全可以把其忽略，而只去读取element vnode，比如：
+
+![](.\image\Snipaste_2024-11-18_16-23-12.jpg)
+
+但是我们需要封装一系列props、directives、hooks所以才利用组件vnode来代理封装。
+
+因为我们已经知道element vnode转换到真实dom的方法了，所以现在主要的问题是：
+
+> component是如何生成vnode的?
+
+我们知道component有几种定义形式：
+
+- 通过.vue文件定义
+- 通过defineComponent定义
+
+但是.vue文件实际上通过构建工具编译之后也就成了defineComponent，所以component的定义本质上还是defineComponent。
+
+不过defineComponent实际上也没有做什么，主要还是defineComponent中定义的render函数干了一些事，没错，我们在processComponent的解析中有提到，组件的更新逻辑componentUpdateFn中，其通过patch(prevTree,nextTree)进行更新，而其中nextTree是利用renderComponentRoot生成的vnode。所以我们可以确定组件的vnode就是在renderComponentRoot中生成的，实际上其内部调用了一个render函数，看看它的实现：
+
+~~~js
+export function renderComponentRoot(...){
+	// ...
+	
+	let result = normalizeVNode(
+        render!.call(
+          thisProxy,
+          proxyToUse!,
+          renderCache,
+          __DEV__ ? shallowReadonly(props) : props,
+          setupState,
+          data,
+          ctx,
+        ),
+      )
+	
+	// ...
+	
+	return result
+}
+~~~
+
+而这个render函数就是我们所定义的render函数，比如：
+
+~~~js
+const App = Vue.defineComponent((props) => {
+     const count = Vue.ref(0)
+     return () => {
+         // 渲染函数或 JSX
+         return Vue.h('div', 'hello')
+     }
+     },
+     {
+         props: {
+             /* ... */
+      }
+})
+~~~
+
+在renderComponentRoot内部的render实际上就是：
+
+~~~
+return () => {
+        // 渲染函数或 JSX
+        return Vue.h('div', 'hello')
+}
+~~~
+
+可以看到它返回的就是一个vnode，那么我们其实已经很清楚了，组件vnode是包含一系列js执行逻辑在内的抽象vnode，不面向最终真实dom的生成，而其内部有一个render函数，可以用来生成element vnode，这就是组件vnode转换成真实dom的途径。
+
+但是有时候我们并不会给defineComponent传入函数式声明，有时候我们会这样定义：
+
+~~~js
+const testComponent = Vue.defineComponent({
+     name: 'MyComponent',
+     setup() {
+         const message = '这是组合式 API 组件';
+         return { message };
+     },
+     template: '<div>{{ message }}</div>'
+})
+~~~
+
+此时并没有显示的定义render函数，那么vue怎么处理的呢？
+
+下面给出render的关联链：
+
+~~~ts
+instance.render = (Component.render || NOOP) as InternalRenderFunction
+~~~
+
+~~~ts
+Component.render = compile(template, finalCompilerOptions)
+~~~
+
+~~~ts
+export function registerRuntimeCompiler(_compile: any) {
+  compile = _compile
+  installWithProxy = i => {
+    if (i.render!._rc) {
+      i.withProxy = new Proxy(i.ctx, RuntimeCompiledPublicInstanceProxyHandlers)
+    }
+  }
+}
+~~~
+
+~~~ts
+registerRuntimeCompiler(compileToFunction)
+~~~
+
+实际上render最终会调用compileToFunction这个函数，而这个函数大致内容是：
+
+~~~js
+function render(_ctx, _cache) {
+  with (_ctx) {
+    const { toDisplayString: _toDisplayString, openBlock: _openBlock, createElementBlock: _createElementBlock } = _Vue
+
+    return (_openBlock(), _createElementBlock("div", null, _toDisplayString(message), 1 /* TEXT */))
+  }
+}
+})
+~~~
+
+实际上就是vue自动帮我们写了一个render函数，这个render函数和我们手写的大差不差，而compileToFunction这个函数的生成是通过一系列ast编译得到的，感兴趣的读者可以去看看，这里就不多提了。
+
+总而言之，我们已经知道组件vnode是一个用于封装js和element vnode的抽象了，其主要的职能是js侧，而生成真实dom主要还是依赖element vnode。具体来说，组件通过调用render函数生成element vnode，再通过patch去代理真实dom的生成。
+
 ### 组件渲染和响应式的联系
 
-### 问题集
+最困难的阶段我们都走过来了（creatApp、vnode、diff、组件转换真实dom），响应式实在是很简单了。
 
-#### namespace的作用
+我们前面学习过processComponent的内部逻辑，其中组件在mount时（mountComponent函数）会执行以下代码：
 
-#### dynamicChildren
+~~~ts
+const effect = (instance.effect = new ReactiveEffect(
+     componentUpdateFn,
+     NOOP,
+     () => queueJob(update),
+     instance.scope, // track it in component's effect scope
+))
+~~~
 
+看过[vue3响应式原理](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902)的读者应该很清楚上面的代码是做什么的，其实就是创建了一个响应式副作用，每当响应式数据发生改变时，副作用的第一个参数会被执行，以达到响应式的效果，也就是componentUpdateFn是实现响应式的具体逻辑。
 
+在上一小节中我提到componentUpdateFn再执行时会调用renderComponentRoot，然后renderComponentRoot调用render函数（可以是我们自己定义的，也可以是vue自动生成的），实际上这个过程就是重新渲染组件下的vnode的过程，每次更新都会执行componentUpdateFn，也就是每次更新都会重新渲染vnode（只是为了方便理解，vue做了处理，如果关联的响应式没变是不会重复渲染的），这样是不是就实现了响应式的效果。
 
+### 作者的话
 
+能看到这里的读者相信都是好样的，未来必然也会跻身大佬之列。相信一些初学者会对源码阅读这样的事情望而却步，但是阅读源码并没有想象中困难、高不可攀。我们为什么觉得阅读源码困难？实际上就是因为我们大多数情况是根据其代码去推断其业务逻辑，这其实就违反了依赖倒转原则，我们怎么能从具体推导出抽象呢？虽然不是不可能完成，但是会付出太多不该付出的努力。所以很多大佬都会劝说先把框架玩的很6之后才去阅读源码，暗含的意思就是让大家先把业务弄清楚，以正向去思考业务的实现，后面会发现其实自己想的和源代码写得大差不差。
+
+总而言之，一句话送给各位：大家都在路上~~
+
+### 参考文献
+
+[vue.js core](https://github.com/vuejs/core)
 

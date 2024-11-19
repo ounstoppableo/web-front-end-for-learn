@@ -8,5 +8,5 @@ vue3作为目前主流的前端框架之一，前端开发者对其的了解绝�
 
 [vue3响应式原理](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902)
 
-[vue3虚拟dom原理]()
+[vue3虚拟dom原理](https://www.unstoppable840.cn/article/7e6567c0-6ccf-4ecb-b20b-cedce7dc5902)
 
