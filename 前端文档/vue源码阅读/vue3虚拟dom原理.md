@@ -79,7 +79,7 @@ function ensureRenderer() {
 }
 ~~~
 
-可以发现ensureRenderer是一个单例工厂，它返回一个渲染器的单例，如果已经创建过渲染器就不再进行创建了，也就是说不管创建多少个vue实例，发生作用的都只有一个渲染器，不过也不会有人会无聊去创建多个vue实例。而createRenderer方法内容如下：
+可以发现ensureRenderer是一个单例工厂，它返回一个渲染器的单例，如果已经创建过渲染器就不再进行创建了，也就是说不管创建多少个vue实例，发生作用的都只有一个渲染器。而createRenderer方法内容如下：
 
 ~~~ts
 export function createRenderer<
@@ -186,6 +186,49 @@ const app = createApp(App).mount('#root')
 ~~~
 
 怎么createApp然后mount就能进行渲染了呢？而对这个问题进行解读就是本篇文章的重头戏。
+
+> #### 小知识
+>
+> 在我们的印象中，createApp只会在main函数里调用一次，然后之后就不会再使用到这个函数了，实际上这个函数还有别的作用——将虚拟dom转换为真实dom。
+>
+> 在vue的源码中，将虚拟dom转换为真实dom都是通过patch代理实现的，然而vue并没有暴露出patch这个函数给我们使用，所以我们只能另辟蹊径，也就是使用createApp。
+>
+> 那么应该怎么使用呢？
+>
+> ~~~vue
+> <template>
+> 	<div ref="demo">
+>         
+>     </div>
+> </template>
+> <script setup>
+> 	import { ref,createApp,onMounted,onUnmounted } from 'vue';
+> 	const demo = ref(null);
+>     const demoApp = ref();
+> 	onMounted(()=>{
+>     	demoApp.value = createApp({render:()=>h('div','一些内容')});
+>     	demoApp.value.mount(demo.value);
+> 	})
+>     // 在某些刷新操作前使用unmount很重要，不然会出现一些意想不到的错误
+> 	onUnmounted(()=>{
+>         demoApp.value.unmount();
+>     })
+> </script>
+> ~~~
+>
+> 那么虚拟dom转真实dom的场景有哪些呢？
+>
+> - 比如我们想在render函数以外的地方使用h函数时，我们知道选项式配置可以自定义render函数，而h一般的使用场景好像也就是这里，但是如果使用createApp，我们就可以将其用于任何地方。其实就类似与JSX的使用方式。
+>
+> 一些注意事项：
+>
+> - 有人会觉得使用createApp心里没底，可能会造成内存增加或者其他一些问题。createApp确实**不到万不得已还是少用**，因为其确实存在一些问题，但内存问题其实并没有那么严重，读者可以往下看看createApp的内部结构，实际上比一个虚拟dom也大不到哪去。
+>
+> - 实际上我们有其他替代方式，也就是动态组件\<component :is=xxx>\</component>
+>
+>   ~~~vue
+>   <component :is="h('div', '一些内容')"></component>
+>   ~~~
 
 #### 组件是如何渲染的
 
