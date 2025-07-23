@@ -408,17 +408,17 @@ git rebase <-i | --interactive> [--onto <newbase>] [<upstream> [<branch>]]
 git rebase -i upstream~5 
 ~~~
 
-> 这个指令非常坑，我们在之前实际上也接触过了~number这样的语法，其表示的就是从HEAD开始往前数5个提交，那么正常来讲upstream~5应该是会数到A的，但是实际上只数到B，对于上面的指令我们可以这样理解：
+> 这个指令非常坑，我们在之前实际上也接触过了\~number这样的语法，其表示的就是从HEAD开始往前数5个提交，那么正常来讲upstream\~5应该是会数到A的，但是实际上只数到B，对于上面的指令我们可以这样理解：
 >
 > “我想要 rebase 从 `topicA~4` 到 `topicA` 之间的所有提交”
 
 ![](.\images\Snipaste_2025-04-18_08-44-26.jpg)
 
-- pick
+- `pick <commit>`
 
   默认操作，即保持该提交不变
 
-- reword
+- `reword <commit>`
 
   保持提交，但是可以修改提交信息
 
@@ -438,7 +438,7 @@ git rebase -i upstream~5
 
   ![](.\images\Snipaste_2025-04-18_08-47-10.jpg)
 
-- edit
+- `edit <commit>`
 
   保持提交，但是可以作为`--amend`操作
 
@@ -458,7 +458,7 @@ git rebase -i upstream~5
 
   ![](.\images\Snipaste_2025-04-18_08-55-44.jpg)
 
-- squash
+- `squash <commit>`
 
   合并提交到上一个提交
 
@@ -474,7 +474,7 @@ git rebase -i upstream~5
 
   ![](.\images\Snipaste_2025-04-18_08-59-32.jpg)
 
-- fixup [-C | -c]
+- `fixup [-C | -c] <commit>`
 
   fixup的操作和sqush是一样的，只不过会暴力的合并提交信息，但加了-c或-C可以修改提交信息
 
@@ -488,23 +488,23 @@ git rebase -i upstream~5
 
   D直接被融合进B’中了。
 
-- exec
+- `exec <command>`
 
   执行shell指令
 
-- break
+- `break`
 
   在这暂停，可以通过`git rebase --continue`进入
 
-- drop
+- `drop <commit>`
 
   移除提交，修改过的文件内容会丢失，新增的文件会被删除
 
-- label
+- `label <label>`
 
   用于标记提交，通常和`reset`和`merge`合用，我们从`reset`和`merge`中体会`label`
 
-- reset
+- `reset <label>`
 
   用于重置提交，类似`git reset --hard xxx`
 
@@ -520,11 +520,46 @@ git rebase -i upstream~5
 
   ![](.\images\Snipaste_2025-04-18_14-27-40.jpg)
 
-- merge
+- `merge [-C <commit> | -c <commit>] <label> [# <oneline>]`
 
-  label+reset+merge可以实现清理提交链的功能
+  merge命令用于进行分支合并操作，我们举个例子：
 
-- update-ref
+  ![](.\images\Snipaste_2025-04-18_15-50-20.jpg)
+
+  ![](.\images\Snipaste_2025-04-19_10-23-49.jpg)
+
+  ![](.\images\Snipaste_2025-04-19_10-22-19.jpg)
+
+  假设我们有两个分支`main`和`feature`，我们将它们进行合并并作用于`feature`上，并将合并节点记作`E`，结果如下：
+
+  ![](.\images\Snipaste_2025-04-18_15-52-57.jpg)
+
+  ![](.\images\Snipaste_2025-04-18_15-53-24.jpg)
+
+  我们利用`git rebase -i --rebase-merges --root`查看带merge的`rebase todolist`情况：
+
+  > **题外话**：
+  >
+  > - `--root`：表示从当前分支的第一个提交开始，假设分支为`main`：A->B->C->D，--root等效于`main~3`
+  >
+  > - `--rebase-merges`：表示带合并指令的`rebase toolist`，正常我们执行`git rebase -i xxx`，git会默认将除了`pick`指令的`todo`行删除，而`--rebase-merges`则能保留`label` / `reset` / `merge`这些行，可以用于重新修改合并等。
+
+  ![](.\images\Snipaste_2025-04-18_16-06-23.jpg)
+
+  这是git根据我们的合并记录自动帮我们生成的`todolist`，让我们通过解释上面的例子弄清楚`merge`指令的含义。
+
+  - `label onto/reset ([new root]/onto)`：用于确定当前的基的
+  - `pick A/B/C`：接受A/B/C等提交
+  - `label branch-point`：记录此时C的提交
+  - `pick D`：接受D的提交
+  - `label E`：标记D提交处为E
+  - `reset branch-point`：回退到C提交的位置
+  - `pick D1`：接受D1的提交
+  - `merge -C 6a15799 E`：合并D1和E，其中`6a15799`为合并节点的哈希
+
+  对于我们一个简单的`git merge`操作，实际上`git rebase`需要执行这么些操作。
+
+- `update-ref <ref>`
 
   在某个提交处创建一个新分支，比如：
 
