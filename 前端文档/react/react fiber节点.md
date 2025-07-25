@@ -20,7 +20,7 @@
 | 结构形式 | 虚拟 DOM 对象           | Fiber 节点链表      |
 | 性能优化 | 基本无                  | 支持时间切片、并发  |
 
-由于react15以前的虚拟dom已经是过去，没有学习的必要，所以**React源码阅读**都是基于fiber来解读react的虚拟dom更新原理的，在**React源码阅读**中，也会逐渐覆盖React Fiber所拥有的特性，并解析其是如何实现的，帮助读者深刻理解react的运行原理。
+由于react15以前的虚拟dom已经是过去，没有学习的必要，所以[React源码阅读](https://www.unstoppable840.cn/article/9a58dd4f-0717-40f6-ac93-a28ffea1ea90)都是基于fiber来解读react的虚拟dom更新原理的，在[React源码阅读](https://www.unstoppable840.cn/article/9a58dd4f-0717-40f6-ac93-a28ffea1ea90)中，也会逐渐覆盖React Fiber所拥有的特性，并解析其是如何实现的，帮助读者深刻理解react的运行原理。
 
 #### 结构介绍
 
@@ -40,7 +40,7 @@ export type Fiber = {
   // 标识Fiber的类型，可以标识是组件function/class，也可以标识是div还是span
   type: any,
 
-  // The local state associated with this fiber.
+  // 一般用来绑定真实DOM
   stateNode: any,
 
   /*
@@ -61,7 +61,7 @@ export type Fiber = {
   sibling: Fiber | null,
   index: number,
 
-  // 用于连接真实dom.
+  // useRef使用的属性.
   ref:
     | null
     | (((handle: mixed) => void) & {_stringRef: ?string, ...})
@@ -393,3 +393,7 @@ function MyComponent() {
 ~~~
 
 它是以链表的形式存储的，并且链表头是我们最开始定义的`useState`所产生的`hooks`。详细代码介绍可以阅读[react常见hooks的实现原理](https://www.unstoppable840.cn/article/b567273d-a71b-442e-bc19-d164da7b5a2e)。
+
+### 参考文献
+
+[React源码](https://github.com/facebook/react/)
