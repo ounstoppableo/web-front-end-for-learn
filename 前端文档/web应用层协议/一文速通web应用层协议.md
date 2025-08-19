@@ -79,21 +79,21 @@ Content-Encoding = #content-coding
 
 目前已经注册过的编码算法有:
 
-| Name ![img](https://www.iana.org/assignments/_support/sort_none.gif) | Description ![img](https://www.iana.org/assignments/_support/sort_none.gif) | Reference ![img](https://www.iana.org/assignments/_support/sort_none.gif) | Notes ![img](https://www.iana.org/assignments/_support/sort_none.gif) |
-| :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| aes128gcm                                                    | 使用 128 位内容加密密钥的 AES-GCM 加密                       | [[RFC8188](https://www.iana.org/go/rfc8188)]                 |                                                              |
-| **br**                                                       | Brotli 压缩数据格式                                          | [[RFC7932](https://www.iana.org/go/rfc7932)]                 |                                                              |
-| compress                                                     | UNIX "compress" data format [Welch, T., "A Technique for High Performance Data Compression", IEEE Computer 17(6), June 1984.] | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.1                                              |
-| dcb                                                          | Dictionary-Compressed Brotli                                 | [[RFC-ietf-httpbis-compression-dictionary-19](https://www.iana.org/go/draft-ietf-httpbis-compression-dictionary-19)] | Section 4                                                    |
-| dcz                                                          | Dictionary-Compressed Zstandard                              | [[RFC-ietf-httpbis-compression-dictionary-19](https://www.iana.org/go/draft-ietf-httpbis-compression-dictionary-19)] | Section 5                                                    |
-| deflate                                                      | "deflate" compressed data ([[RFC1951](https://www.iana.org/go/rfc1951)]) inside the "zlib" data format ([[RFC1950](https://www.iana.org/go/rfc1950)]) | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.2                                              |
-| exi                                                          | W3C 有效 XML 交换标准                                        | [[W3C Recommendation: Efficient XML Interchange (EXI) Format](http://www.w3.org/TR/exi/)] |                                                              |
-| **gzip**                                                     | GZIP file format [[RFC1952](https://www.iana.org/go/rfc1952)] | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.3                                              |
-| **identity**                                                 | 不编码                                                       | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 12.5.3                                               |
-| pack200-gzip                                                 | Java 资源文件的网络传输格式                                  | [[JSR 200: Network Transfer Format for Java](http://www.jcp.org/en/jsr/detail?id=200)][[Kumar_Srinivasan](https://www.iana.org/assignments/http-parameters/http-parameters.xhtml#Kumar_Srinivasan)][[John_Rose](https://www.iana.org/assignments/http-parameters/http-parameters.xhtml#John_Rose)] |                                                              |
-| x-compress                                                   | compress的别名                                               | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.1                                              |
-| x-gzip                                                       | gzip的别名                                                   | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.3                                              |
-| zstd                                                         | 使用 Zstandard 协议压缩的字节流，其窗口大小不超过 8MB        | [[RFC9659](https://www.iana.org/go/rfc9659)][[RFC8878](https://www.iana.org/go/rfc8878)] |                                                              |
+| Name         | Description                                                  | Reference                                                    | Notes           |
+| :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :-------------- |
+| aes128gcm    | 使用 128 位内容加密密钥的 AES-GCM 加密                       | [[RFC8188](https://www.iana.org/go/rfc8188)]                 |                 |
+| **br**       | Brotli 压缩数据格式                                          | [[RFC7932](https://www.iana.org/go/rfc7932)]                 |                 |
+| compress     | UNIX "compress" data format [Welch, T., "A Technique for High Performance Data Compression", IEEE Computer 17(6), June 1984.] | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.1 |
+| dcb          | Dictionary-Compressed Brotli                                 | [[RFC-ietf-httpbis-compression-dictionary-19](https://www.iana.org/go/draft-ietf-httpbis-compression-dictionary-19)] | Section 4       |
+| dcz          | Dictionary-Compressed Zstandard                              | [[RFC-ietf-httpbis-compression-dictionary-19](https://www.iana.org/go/draft-ietf-httpbis-compression-dictionary-19)] | Section 5       |
+| deflate      | "deflate" compressed data ([[RFC1951](https://www.iana.org/go/rfc1951)]) inside the "zlib" data format ([[RFC1950](https://www.iana.org/go/rfc1950)]) | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.2 |
+| exi          | W3C 有效 XML 交换标准                                        | [[W3C Recommendation: Efficient XML Interchange (EXI) Format](http://www.w3.org/TR/exi/)] |                 |
+| **gzip**     | GZIP file format [[RFC1952](https://www.iana.org/go/rfc1952)] | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.3 |
+| **identity** | 不编码                                                       | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 12.5.3  |
+| pack200-gzip | Java 资源文件的网络传输格式                                  | [[JSR 200: Network Transfer Format for Java](http://www.jcp.org/en/jsr/detail?id=200)][[Kumar_Srinivasan](https://www.iana.org/assignments/http-parameters/http-parameters.xhtml#Kumar_Srinivasan)][[John_Rose](https://www.iana.org/assignments/http-parameters/http-parameters.xhtml#John_Rose)] |                 |
+| x-compress   | compress的别名                                               | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.1 |
+| x-gzip       | gzip的别名                                                   | [[RFC9110](https://www.iana.org/go/rfc9110)]                 | Section 8.4.1.3 |
+| zstd         | 使用 Zstandard 协议压缩的字节流，其窗口大小不超过 8MB        | [[RFC9659](https://www.iana.org/go/rfc9659)][[RFC8878](https://www.iana.org/go/rfc8878)] |                 |
 
 如果我们需要进行内容压缩，具体的流程如下：
 
@@ -338,7 +338,7 @@ connection-option = token
 
 - 并发
 
-  指的是客户端启多个端口去建立HTTP连接。
+  指的是客户端启多个端口去建立TCP连接。
 
 以上三点就是HTTP/1.1实现的**伪多路复用**，在现实中管道已经被弃用了，因为队头阻塞是个很大的问题，而持久性和并发对性能的提升也非常有限，所以说是**伪**的。
 
@@ -728,7 +728,7 @@ HTTP/2的多路复用，其中**多路**指的是**多个流**，**复用**指�
 | --------------------------------- | ------------------------------------ | ------------------------------------------------- |
 | 多路复用                          | ❌ 不支持（请求串行）                 | ✅ 支持（请求并行，帧交错）                        |
 | 每个连接可并发请求数              | 通常**1 个**（长连接串行）           | 通常**成百上千个 stream**（一个连接并发多个请求） |
-| 队头阻塞（Head-of-Line Blocking） | ✅ 严重：前一个请求未完成，下一个卡住 | ✅ 已解决：一个请求慢不会卡其他                    |
+| 队头阻塞（Head-of-Line Blocking） | ❌ 严重：前一个请求未完成，下一个卡住 | ✅ 已解决：一个请求慢不会卡其他                    |
 | 请求复用机制                      | 一个连接同时只能处理一个请求         | 一个连接中的多个 stream 可以交错传输帧            |
 | 帧机制                            | 基于文本请求/响应报文                | 请求/响应被拆成二进制帧，按 stream 编号交错发送   |
 | 典型优化手段                      | 需要多个 TCP 连接并发                | 一个 TCP 连接就能并发所有请求                     |
@@ -803,7 +803,7 @@ HTTP/2的头部压缩指的是对**HEADERS帧的payload**进行压缩。
 
 HPACK里有几个重要的实体：
 
-- **静态表**，只读，定义了常见的头字段
+- **静态表**，只读，定义了常见的头字段索引
 
 - **动态表**，先进先出表，如果存的内容超出表大小则将老条目驱逐，会和静态表形成联合索引空间
 
@@ -816,6 +816,12 @@ HPACK里有几个重要的实体：
                          ^                   |
                          |                   V
                   Insertion Point      Dropping Point
+  ~~~
+
+  并且每个索引对应的是一个键值对，比如：
+
+  ~~~
+  | 42 | { key: 'Content-Type', value: 'application/javascript' } |
   ~~~
 
 - **头字段键值对**（比如：`:method: GET`）
@@ -978,22 +984,653 @@ HPACK里有几个重要的实体：
 
 #### HTTP/3
 
+在HTTP/2中，队头阻塞貌似解决的很好，流之间不互相干扰，正常来讲上层建筑是没问题了，但是地基出了问题，TCP成为了HTTP/2队头阻塞的原因。具体来说，TCP对于**丢包**的情况是**无法容忍**的，现在有两种解决这个问题的方法：**N版本回退**、**按需重传**。N版本回退就不用说了，对性能的影响很重，一般不会使用，常规TCP处理丢包使用的就是**按需重传**，那么按需重传是如何造成队头阻塞的呢？我们都知道TCP里有一个SEC字段，用于告知对等方我数据读到哪了，假设`SEC=128`，那么前面128个数据包我肯定都读过了。这造成一个问题，假设某个包丢了，那我就需要等待其重传，也就会将SEC停留再等待这个包完成重传上，于是就造成了后续的包的阻塞。
+
+以上就是TCP造成的**HTTP/2**的**队头阻塞**，居然从根上出了问题！那怎么办呢？换一个根啊！于是`HTTP/3`将`TCP`转为使用基于`UDP`协议的多路复用传输协议`QUIC`协议。
+
+##### QUIC
+
+QUIC是一个基于UDP的**可靠**传输层协议，QUIC设计的目的是为了取代TCP，所以也常被称为TCP/2，由于本篇文章主要介绍的是应用层协议，所以在这里不会对QUIC进行太详细的进行介绍，本小节主要介绍其基本工作原理。
+
+在QUIC中有三个主要概念：**流**、**连接**、**数据包和帧**。
+
+- **流**
+
+  - 流在QUIC中体现为**帧**
+
+  - 流可以是单向的也可以是双向的
+
+  - 一个连接上的所有**流都是唯一的**，根据stream ID(62位整数)区分，一个连接不可复用stream ID
+
+  - stream ID的最低位（0x01）标识了流的启动方，如果设为0则表示客户端建立的流，如果为1则表示服务器建立的流；倒数第二位则表示是双向还是单向，0为双向，1为单向，总结如下：
+
+    | Bits | 流类型                                               |
+    | :--- | :--------------------------------------------------- |
+    | 0x00 | 客户端发起，双向（Client-Initiated, Bidirectional）  |
+    | 0x01 | 服务器发起，双向（Server-Initiated, Bidirectional）  |
+    | 0x02 | 客户端发起，单向（Client-Initiated, Unidirectional） |
+    | 0x03 | 服务器发起，单向（Server-Initiated, Unidirectional） |
+
+  - 流帧（stream Frames）用于封装应用程序发送的数据，收发端利用流帧中的stream ID和偏移字段来**按顺序**放置数据；同一偏移的数据可以被发送多次，但是不能被修改，已收到的数据可以被丢弃；发送的数据量需要在对等方设置的拥塞窗口限制内
+
+  - Quic**不定义优先级标识位**，而交由应用程序指示，将优先级控制交给应用程序自己
+
+  - 流一共有两种状态，**接收状态**和**发送状态**，单向时每个端点都只有一个状态，而双向时每个端点有两个状态
+
+    流的发送状态状态机：
+
+    ~~~ts
+        o
+        | Create Stream (Sending)
+        | Peer Creates Bidirectional Stream
+        v
+    +-------+
+    | Ready | Send RESET_STREAM
+    |       |-----------------------.
+    +-------+                       |
+        |                           |
+        | Send STREAM /             |
+        |      STREAM_DATA_BLOCKED  |
+        v                           |
+    +-------+                       |
+    | Send  | Send RESET_STREAM     |
+    |       |---------------------->|
+    +-------+                       |
+        |                           |
+        | Send STREAM + FIN         |
+        v                           v
+    +-------+                   +-------+
+    | Data  | Send RESET_STREAM | Reset |
+    | Sent  |------------------>| Sent  |
+    +-------+                   +-------+
+        |                           |
+        | Recv All ACKs             | Recv ACK
+        v                           v
+    +-------+                   +-------+
+    | Data  |                   | Reset |
+    | Recvd |                   | Recvd |
+    +-------+                   +-------+
+    
+    // 其中Data Recvd状态表示发送的数据已经全部被接收方确认
+    // Reset Recvd表示接收方收到发送方需要重置传输的请求，此时可以重传数据
+    ~~~
+
+    流的接收状态状态机：
+
+    ~~~ts
+        o
+        | Recv STREAM / STREAM_DATA_BLOCKED / RESET_STREAM
+        | Create Bidirectional Stream (Sending)
+        | Recv MAX_STREAM_DATA / STOP_SENDING (Bidirectional)
+        | Create Higher-Numbered Stream
+        v
+    +-------+
+    | Recv  | Recv RESET_STREAM
+    |       |-----------------------.
+    +-------+                       |
+        |                           |
+        | Recv STREAM + FIN         |
+        v                           |
+    +-------+                       |
+    | Size  | Recv RESET_STREAM     |
+    | Known |---------------------->|
+    +-------+                       |
+        |                           |
+        | Recv All Data             |
+        v                           v
+    +-------+ Recv RESET_STREAM +-------+
+    | Data  |--- (optional) --->| Reset |
+    | Recvd |  Recv All Data    | Recvd |
+    +-------+<-- (optional) ----+-------+
+        |                           |
+        | App Read All Data         | App Read Reset
+        v                           v
+    +-------+                   +-------+
+    | Data  |                   | Reset |
+    | Read  |                   | Read  |
+    +-------+                   +-------+
+    ~~~
+
+    以上状态可以映射到HTTP/2上：
+
+    | Sending Part             | Receiving Part           | Composite State（http/2） |
+    | :----------------------- | :----------------------- | :------------------------ |
+    | No Stream / Ready        | No Stream / Recv (*1)    | idle                      |
+    | Ready / Send / Data Sent | Recv / Size Known        | open                      |
+    | Ready / Send / Data Sent | Data Recvd / Data Read   | half-closed (remote)      |
+    | Ready / Send / Data Sent | Reset Recvd / Reset Read | half-closed (remote)      |
+    | Data Recvd               | Recv / Size Known        | half-closed (local)       |
+    | Reset Sent / Reset Recvd | Recv / Size Known        | half-closed (local)       |
+    | Reset Sent / Reset Recvd | Data Recvd / Data Read   | closed                    |
+    | Reset Sent / Reset Recvd | Reset Recvd / Reset Read | closed                    |
+    | Data Recvd               | Data Recvd / Data Read   | closed                    |
+    | Data Recvd               | Reset Recvd / Reset Read | closed                    |
+
+- **连接**
+
+  - 每个连接都具有一组连接标识符或connection ID，每个connection ID都可以识别连接，对等双方的connection ID不一定保持一致，但需要能标识到同一个连接
+
+  - 发送的数据包（UDP层）将通过connetction ID与连接绑定
+
+  - 发送给客户端的有效数据包始终包含客户端的connection ID；发送给服务端的有效数据包同理
+
+  - Quic的连接握手支持0-RTT和1-RTT，流程如下：
+
+    ~~~
+    Client                                               Server
+    Initial (CRYPTO)
+    0-RTT (*)              ---------->
+                                               Initial (CRYPTO)
+                                             Handshake (CRYPTO)
+                           <----------                1-RTT (*)
+    Handshake (CRYPTO)
+    1-RTT (*)              ---------->
+                           <----------   1-RTT (HANDSHAKE_DONE)
+    1-RTT                  <=========>                    1-RTT
+    ~~~
+
+    其中0-RTT表示无需等待完整握手，客户端**可以立即发送数据**，1-RTT表示建立连接时需要一次完整的来回（握手）才能开始传数据。
+
+    具体的连接示例如下（每行表示一个数据包，比如Initial[0]: CRYPTO[CH]表示一个类型为initial的数据包，包编号为0，内部包含CRYPTO帧并携带ClientHello(CH)）：
+    **0-RTT**：
+
+    其中ACK[0/1]的0/1对应包的编号，比如`xxx[x]: ..., ACK[1]`对应回复`xxx[1]: ...`
+
+    ~~~sh
+    Client                                                  Server
+    Initial[0]: CRYPTO[CH]
+    0-RTT[0]: STREAM[0, "..."] ->
+                                     Initial[0]: CRYPTO[SH] ACK[0]
+                                      Handshake[0] CRYPTO[EE, FIN]
+                                      						# 此时ACK[0]回复前面的0-RTT[0]
+                              <- 1-RTT[0]: STREAM[1, "..."] ACK[0]
+    Initial[1]: ACK[0]
+    Handshake[0]: CRYPTO[FIN], ACK[0]
+    1-RTT[1]: STREAM[0, "..."] ACK[0] ->
+                                              Handshake[1]: ACK[0]
+                                          # 奇数原则
+             <- 1-RTT[1]: HANDSHAKE_DONE, STREAM[3, "..."], ACK[1]
+    ~~~
+
+    **1-RTT**：
+
+    ~~~sh
+    Client                                                  Server
+    Initial[0]: CRYPTO[CH] ->
+                                     Initial[0]: CRYPTO[SH] ACK[0]
+                           Handshake[0]: CRYPTO[EE, CERT, CV, FIN]
+                                     <- 1-RTT[0]: STREAM[1, "..."]
+    Initial[1]: ACK[0]
+    Handshake[0]: CRYPTO[FIN], ACK[0]
+    1-RTT[0]: STREAM[0, "..."], ACK[0] ->
+                                              Handshake[1]: ACK[0]
+             <- 1-RTT[1]: HANDSHAKE_DONE, STREAM[3, "..."], ACK[0]
+    ~~~
+
+    一般来说第一次连接使用的都是**1-RTT**，而重连则可以选择使用**0-RTT**。在上面两个例子中**0-RTT**究竟比**1-RTT**快在哪？我们在**0-RTT的例子中看到**客户端在还没握完手时就发送了流帧`0-RTT[0]: STREAM[0, "..."] ->`，而**1-RTT**则需要在握完手后才能发送，这样的处理快了一个RTT。但是有的读者可能会问，既然**0-RTT**开始就发送了流帧，为什么后续还要重发`1-RTT[1]: STREAM[0, "..."] ACK[0] ->`一遍呢？这不就让**0-RTT**显得有点多余了吗？实际上我们并不能确定服务器是否会处理**0-RTT**的流帧，所以才会在**1-RTT**的上重发流帧，如果处理了当然皆大欢喜，如果没处理也能正常保证可靠性，因为在QUIC的世界里流帧是可以重复传输的，多余的流帧直接丢弃即可。
+
+- **数据包和帧**
+
+  - 数据包和帧的关系是，数据包包含帧，数据包是UDP中的**最小传输单元**，而帧是**协议逻辑单元**，描述控制/数据等内容，其关系可视化如下：
+
+    ~~~
+    +--------------------------+
+    | Packet Header            |  ← QUIC的连接ID、加密信息等
+    +--------------------------+
+    | Encrypted Payload        |
+    |   +-------------------+  |
+    |   | Frame 1           |  |  ← 比如 STREAM 帧
+    |   +-------------------+  |
+    |   | Frame 2           |  |  ← 比如 ACK 帧
+    |   +-------------------+  |
+    |   | Frame 3           |  |  ← 比如 CRYPTO 帧
+    |   +-------------------+  |
+    +--------------------------+
+    ~~~
+
+  - 一个UDP数据报可以包含多个数据包
+
+可以看到QUIC和HTTP/2有点类似，他们之间似乎有相互借鉴：一个连接中分为多个**流**，以此来解决某个请求的阻塞导致的整个链路的阻塞的问题。
+
+不过我们要区分一个问题，就是**请求**这个概念只有在应用层才有，先前在HTTP/2中说的一个**流**代表一个**请求**在QUIC就不同了，应用层的**请求**在QUIC中可能会被拆分成多次数据包的往返，而一次数据包的往返可能就新建了一个**流**，所以在QUIC中**流**是更细化的存在。但这并不是说一个**流**就只能进行一次数据往返，我们前面提到**流**内除了有stream ID进行区分外，还有偏移进行排序，多次的数据往返中，可能会存在stream ID相同，但是偏移不同的情况。
+
+总而言之,QUIC和HTTP/2的相似之处很多，读者可以借鉴HTTP/2来理解QUIC。
+
+##### QPACK
+
+QPACK为HPACK的改进版本，用于解决HPACK中解码器的串行堵塞问题：
+
+~~~
+客户端流1：
+HEADERS -> 引用了索引42（动态表）
+
+→ 如果解码器还没搜到索引42，对不起，整个流必须等待。
+~~~
+
+所有的流都必须等待动态表索引完成才能进行后续操作。
+
+**为什么HPACK不支持并行解码呢**？主要是因为解码器（动态表）是一个可变队列，如果不严格串行执行，会导致索引到不存在的值或错误的值（每个流的头帧都要修改动态表，所以动态表某种意义上算是每个流的头帧独享的）。比如：
+
+我们知道客户端和服务端都维护了一套编码器/解码器，此时要建立A和B两个流，并且A和B有相同的头`authorization: Bearer xxx`。
+
+- 在串行解码的条件下：
+
+  A先发送，在客户端的编码器/解码器上给头添加索引，然后发送给服务端，服务端解码A并更新编码器/解码器；然后客户端再发送B，从客户端的编码器中找到`authorization: Bearer xxx`头字段的索引，发送给服务端，服务端的解码器也能找到该索引，完成。
+
+- 在并行解码的条件下：
+
+  还是A先发送，在客户端的编码器/解码器上给头添加索引，然后发送给服务端，但是此时服务端还没解码完成，B就发送了，并且携带从客户端编码器/解码器中获取的`authorization: Bearer xxx`头字段的索引到服务端，找不到索引，失败。
+
+**QPACK是如何支持并行的？**其实主要就是解决**解码器可能会遇到一个不存在的索引**的问题。在此之前我们先看一下在QPACK中**Encoded Field Section Prefix**（类似于HPACK中的**头字段表示**）结构：
+
+~~~
+  0   1   2   3   4   5   6   7
++---+---+---+---+---+---+---+---+
+|   Required Insert Count (8+)  |
++---+---------------------------+
+| S |      Delta Base (7+)      |
++---+---------------------------+
+|      Encoded Field Lines    ...
++-------------------------------+
+~~~
+
+下面来看一下QPACK对于并行的解决方法：
+
+- 编码器（encoder）
+
+  我们可以看到在**头字段表示**有`Required Insert Count`，编码器会检查动态表内的字段，如果存在符合条件的就设置`Required Insert Count`为比动态表中最大**绝对索引**还大1的值（就类似数组索引和数组长度，Required Insert Count比作数组长度，所以需要+1），如果没有符合条件的就设置为0。在QPACK中定义了`Required Insert Count`的计算方式：
+
+  ~~~sh
+  # ReqInsertCount为比动态表中最大绝对索引 + 1
+  if ReqInsertCount == 0:
+     EncInsertCount = 0
+  else:
+     EncInsertCount = (ReqInsertCount mod (2 * MaxEntries)) + 1 # MaxEntries为动态表的最大条目数
+  
+  # EncInsertCount为最终发出的Required Insert Count
+  ~~~
+
+- 解码器（decoder）
+
+  ~~~sh
+  # EncodedInsertCount为上面的EncInsertCount
+  FullRange = 2 * MaxEntries # MaxEntries为动态表的最大条目数
+  if EncodedInsertCount == 0:
+     ReqInsertCount = 0
+  else:
+     if EncodedInsertCount > FullRange:
+        Error
+     MaxValue = TotalNumberOfInserts + MaxEntries # TotalNumberOfInserts是解码器动态表中的插入总数
+     # MaxWrapped为ReqInsertCount的最大可能值
+     MaxWrapped = floor(MaxValue / FullRange) * FullRange
+     ReqInsertCount = MaxWrapped + EncodedInsertCount - 1
+     if ReqInsertCount > MaxValue:
+        if ReqInsertCount <= FullRange:	
+           Error
+        ReqInsertCount -= FullRange
+     if ReqInsertCount == 0:
+        Error
+  ~~~
+
+  用以上算法解码`Required Insert Count`，所得结果小于或等于解码器动态表的`Insert Count`时，就可以立即解码，否则会阻塞至`Insert Count`增加到满足条件。
+  
+  > **rfc9204**
+  >
+  > Insert Count: The total number of entries inserted in the dynamic table.
+
+下面我们来看一下编/解码器完整的工作流：
+
+**添加条目**
+
+- 编码器，接收到新的头字段，生成**编码器指令**帧（插入和复制），在通过与**本端的动态表**和**解码器**建立的流上发送**编码器指令**。
+
+- **本端的动态表**更新条目，**解码器**端更新器**解码器端的动态表**（编码器和解码器分别维持各自的动态表，但都是由编码器更新）
+
+  > **rfc9204**
+  >
+  > The dynamic table consists of a list of field lines maintained in first-in, first-out order. A QPACK encoder and decoder share a dynamic table that is initially empty. The encoder adds entries to the dynamic table and sends them to the decoder via instructions on the encoder stream
+
+- **解码器**端更新器**解码器端的动态表**后，同时更新`Insert Count`（插入和复制都会更新），并且需要通知**编码器**“我更新到哪了”，通知帧格式为：
+
+  ~~~
+    0   1   2   3   4   5   6   7
+  +---+---+---+---+---+---+---+---+
+  | 0 | 0 |     Increment (6+)    |
+  +---+---+-----------------------+
+  ~~~
+
+  这个帧用于增加存储在编码器上的`Known Received Count`，`Known Received Count`记录的是**解码器确认的动态表插入和重复的总数**。其作用主要是：**编码器跟踪`Known Received Count`，以确定可以在不潜在阻塞流的情况下引用哪些动态表条目**。
+
+  >**rfc9204**
+  >
+  >The Known Received Count is the total number of dynamic table insertions and duplications acknowledged by the decoder. The encoder tracks the Known Received Count in order to identify which dynamic table entries can be referenced without potentially blocking a stream. The decoder tracks the Known Received Count in order to be able to send Insert Count Increment instructions.
+
+**使用条目**
+
+- 编码器接收到某个头时，发现其存在动态表中，计算出`Required Insert Count`的值后，生成**头字段表示**，发送给解码器
+
+- 解码器发现接收到的**头字段表示**`Required Insert Count`不为零，处理了该头字段后会给编码器发送一个`Section Acknowledgment`帧
+
+  ~~~
+    0   1   2   3   4   5   6   7
+  +---+---+---+---+---+---+---+---+
+  | 1 |      Stream ID (7+)       |
+  +---+---------------------------+
+  ~~~
+
+  用于告知编码器，解码器已经处理到哪了。
+
+> **注意**
+>
+> 一对编/解码器指的是**客户端的编码器和服务端的解码器**或**客户端的解码器和服务端的编码器**，两对之间并不需要对齐环境。
+
+通过以上内容，我们可以知道QPACK如何处理**解码器可能会遇到一个不存在的索引**，它使用了两个保证，一个是在编码器比较`Known Received Count`确定是否进行编码；一个是在解码器比较`Required Insert Count`和本端动态表的`Insert Count`，以此来判断是否阻塞解码。而阻塞也只是在单个流上阻塞，并不会影响其他流的解码，以此实现并发解码。
+
+以上是关于**编码器和解码器的条目使用工作流**，是一个概览，下面我们来看看**解码器具体是如何解码的**。
+
+在QPACK中引入了三个索引：
+
+- **绝对索引**（Absolute Index）
+
+  表示动态表里某个条目的全局索引，类似 HPACK 的索引，或者也可以说是`Insert Count`。
+
+- **相对索引**（Relative Index）
+
+  相对索引为**基于最新某个基准向后偏移的索引**
+
+  某个基准主要分两种情况：
+
+  - **编码器指令**中
+
+    在编码器指令中主要是用于复用时才会使用到相对索引，比如`Insert with Name Reference`用于更新某个head field的value或者`Duplicate`用于复制一个完整的**头字段**
+
+    Relative Index在**编码器指令**中会一直将0指向动态表的表头（最新插入的字段）：
+
+    ~~~
+          +-----+---------------+-------+
+          | n-1 |      ...      |   d   |  Absolute Index
+          + - - +---------------+ - - - +
+          |  0  |      ...      | n-d-1 |  Relative Index
+          +-----+---------------+-------+
+          ^                             |
+          |                             V
+    Insertion Point               Dropping Point
+    ~~~
+
+  - **头字段表示**中
+
+    在头字段表示中使用主要就是用于编码器的索引了。
+
+    Relative Index在**头字段表示**中是基于`Base`来确定0位的：
+
+    ~~~
+            Base
+                |
+                V
+    +-----+-----+-----+-----+-------+
+    | n-1 | n-2 | n-3 | ... |   d   |  Absolute Index
+    +-----+-----+  -  +-----+   -   +
+                |  0  | ... | n-d-3 |  Relative Index
+                +-----+-----+-------+
+    ~~~
+
+- Post-Base Index
+
+  其实也是相对索引的一类，只不过其与Relative Index增长方向相反。
+  
+  ~~~
+             Base
+              |
+              V
+  +-----+-----+-----+-----+-----+
+  | n-1 | n-2 | n-3 | ... |  d  |  Absolute Index
+  +-----+-----+-----+-----+-----+
+  |  1  |  0  |                    Post-Base Index
+  +-----+-----+
+  ~~~
+
+到这里读者会疑惑，这个`Base`是什么呢？
+
+我们回顾前文提到的**Encoded Field Section Prefix**，他由`Delta Base`计算得出（一般`Delta Base`由程序员进行控制）。主要用于计算相对索引，以减少空间的消耗，我们知道`Absolute Index`是无限增加的，所以到后面会有严重的空间消耗问题。计算公式如下：
+
+~~~sh
+# 其中Sign为1bit的S，0表示Base大于或等于Required Insert Count的值，1表示Base小于Required Insert Count的值
+if Sign == 0:
+   Base = ReqInsertCount + DeltaBase
+else:
+   Base = ReqInsertCount - DeltaBase - 1
+~~~
+
+知道了索引怎么用了之后，下面我们看看索引是在哪用的，也是和`HPACK`一样，分为几类索引帧，接在**Encoded Field Section Prefix**之后：
+
+- **Indexed Field Line**
+
+  常规索引，利用Absolute Index来索引头字段
+
+  ~~~
+    0   1   2   3   4   5   6   7
+  +---+---+---+---+---+---+---+---+
+  | 1 | T |      Index (6+)       |
+  +---+---+-----------------------+
+  ~~~
+
+- **Indexed Field Line with Post-Base Index**
+
+  利用Post-Base Index来索引头字段
+
+  ~~~
+    0   1   2   3   4   5   6   7
+  +---+---+---+---+---+---+---+---+
+  | 0 | 0 | 0 | 1 |  Index (4+)   |
+  +---+---+---+---+---------------+
+  ~~~
+
+- **Literal Field Line with Name Reference**
+
+  表示索引空间内存在这个条目，但值是新的，老位置通过Absolute Index查找
+
+  ~~~
+    0   1   2   3   4   5   6   7
+  +---+---+---+---+---+---+---+---+
+  | 0 | 1 | N | T |Name Index (4+)|
+  +---+---+---+---+---------------+
+  | H |     Value Length (7+)     |
+  +---+---------------------------+
+  |  Value String (Length bytes)  |
+  +-------------------------------+
+  ~~~
+
+- **Literal Field Line with Post-Base Name Reference**
+
+  表示索引空间内存在这个条目，但值是新的，老位置通过Post-Base Index查找
+
+  ~~~
+    0   1   2   3   4   5   6   7
+  +---+---+---+---+---+---+---+---+
+  | 0 | 0 | 0 | 0 | N |NameIdx(3+)|
+  +---+---+---+---+---+-----------+
+  | H |     Value Length (7+)     |
+  +---+---------------------------+
+  |  Value String (Length bytes)  |
+  +-------------------------------+
+  ~~~
+
+- **Literal Field Line with Literal Name**
+
+  新条目，无索引
+
+  ~~~
+    0   1   2   3   4   5   6   7
+  +---+---+---+---+---+---+---+---+
+  | 0 | 0 | 1 | N | H |NameLen(3+)|
+  +---+---+---+---+---+-----------+
+  |  Name String (Length bytes)   |
+  +---+---------------------------+
+  | H |     Value Length (7+)     |
+  +---+---------------------------+
+  |  Value String (Length bytes)  |
+  +-------------------------------+
+  ~~~
+
+##### 小结
+
+HTTP/3中比较新的东西就是**QUIC**和**QPACK**，用于解决队头阻塞问题，其他核心工作流和HTTP/2类似，这里就不再赘述了。
+
 #### HTTPS
+
+
+
+#### SSE
+
+SSE又被称为server-event，是2015年W3C提出的关于HTML5的一个建议性规范里的内容。
+
+SSE基于HTTP协议，在规定中，定义了一个类用于实现服务器推送：
+
+~~~ts
+var source = new EventSource('updates.cgi');
+source.onmessage = function (event) {
+  alert(event.data);
+};
+
+// 实现的效果如下：
+// 响应头携带Content-Type: text/event-stream，响应体内容如下：
+// data: This is the first message.
+// data: This is the second message, it
+// data: has two lines.
+// data: This is the third message.
+~~~
+
+SSE支持自定义事件类型：
+
+~~~ts
+var source = new EventSource('updates.cgi');
+source.addEventListener('add', addHandler, false);
+source.addEventListener('remove', removeHandler, false);
+
+// event: add
+// data: 73857293
+// event: remove
+// data: 2153
+// event: add
+// data: 113411
+// 默认事件类型为message
+~~~
+
+很多读者会疑惑，HTTP/1.1并不支持服务器推送，那么为什么基于HTTP/1.1还能使用SSE？实际上SSE和HTTP协议中定义的服务器推送没有什么关系，只要客户端和服务器建立了连接，服务器按照对应的格式发送消息，满足W3C标准的浏览器自然会帮助进行解析。
+
+还有一个问题就是基于HTTP/1.1的SSE会收到最大连接的限制，在HTTP/1.1中，由于请求是串行的，所以我们不能在某个连接中同时使用SSE和进行其他请求，因为SSE会阻塞其他请求，只能通过额外创建一个请求来实现SSE，这样不断地建立连接后就会造成服务器甚至客户端的最大连接限制，而到了HTTP/2以后有了流的概念后，才可以在连接中同时使用SSE和进行其他请求。
 
 #### 流式传输
 
+很多读者会将流式传输和SSE弄混，流式传输并不等于SSE！流式传输是最终的效果，而SSE只能说是实现流式传输这个效果的手段之一。
+
+一般情况下基于HTTP我们有三种进行流式传输的方法：
+
+- HTTP/1.1的Chunked Transfer
+
+  假设客户端进行了请求，服务器利用Chunked Transfer返回一个动态生成的文本：
+
+  ~~~
+  HTTP/1.1 200 OK
+  Content-Type: text/plain
+  Transfer-Encoding: chunked
+  
+  7\r\n
+  Mozilla\r\n
+  9\r\n
+  Developer\r\n
+  7\r\n
+  Network\r\n
+  0\r\n
+  \r\n
+  
+  ~~~
+
+  体现在服务端代码（node.js）上就是：
+
+  ~~~js
+  res.write('Hello ');
+  res.write('World');
+  res.end();
+  ~~~
+
+  而客户端接收方式如下：
+
+  ~~~ts
+  fetch('/chunked-endpoint').then(res => {
+    const reader = res.body.getReader();
+    function read() {
+      reader.read().then(({done, value}) => {
+        if (done) return;
+        // value 是 Uint8Array，处理显示
+        console.log(new TextDecoder().decode(value));
+        read(); // 递归读下一个 chunk
+      });
+    }
+    read();
+  });
+  ~~~
+
+- SSE
+
+  SSE用于实现流式也很简单，服务器可以将动态文本作为服务器事件一次一次的推送给客户端，前面SSE小节也已经演示过了，这里就不再赘述。
+
+- HTTP/2之后的服务器推送
+
 ### WebSocket
+
+WebSocket是2011年rfc6455协议中定义的一个全新的应用层协议，底层协议使用的是TCP，区别于HTTP协议，WebSocket是一个**全双工协议**，TCP本身是支持全双工的，所以本文就不过多介绍WebSocket是如何实现全双工的了。
+
+比较需要提的也就是WebSocket的连接了，WebSocket连接被设计成了HTTP协议升级的形式（也就是通过HTTP进行握手），主要升级请求包格式为：
+
+~~~sh
+GET /chat HTTP/1.1
+Host: server.example.com
+
+# 核心头字段
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+
+Origin: http://example.com
+
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+~~~
+
+服务端回应：
+~~~sh
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+Sec-WebSocket-Protocol: chat
+~~~
+
+> `Sec-WebSocket-Key`是随机的字符串，服务器端会用这些数据来构造出一个`SHA-1`的信息摘要。把`Sec-WebSocket-Key`加上一个特殊字符串`258EAFA5-E914-47DA-95CA-C5AB0DC85B11`，然后计算[SHA-1](https://zh.wikipedia.org/wiki/SHA-1)摘要，之后进行[Base64](https://zh.wikipedia.org/wiki/Base64)编码，将结果做为`Sec-WebSocket-Accept`头的值，返回给客户端。如此操作，**可以尽量避免普通HTTP请求被误认为Websocket协议**。
+
+前面也提过，TCP存在队头阻塞问题，那使用TCP作为底层框架的WebSocket也会存在队头阻塞问题。虽然存在丢包情况下，不需要人为去进行重发，但是使用者能感受到卡顿，这对于某些场景（游戏、音视频）的用户来说是很难容忍的。所以在这种对低时延敏感的场景中，我们一般不使用基于TCP这种类似于串行处理包WebSocket协议，而是用`QUIC`或`WebRTC`，即使某个数据包处理卡顿了，也不会影响后续包的处理。
 
 ### 参考文献
 
-[HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110#name-introduction)
+[HTTP Semantics-rfc9110](https://www.rfc-editor.org/rfc/rfc9110#name-introduction)
 
-[HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#name-expires)
+[HTTP Caching-rfc9111](https://www.rfc-editor.org/rfc/rfc9111#name-expires)
 
-[Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing](https://www.rfc-editor.org/rfc/rfc7230.html#page-50)
+[Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing-rfc7230](https://www.rfc-editor.org/rfc/rfc7230.html#page-50)
 
 [HTTP/2维基百科](https://zh.wikipedia.org/wiki/HTTP/2)
 
-[HTTP/2](https://www.rfc-editor.org/rfc/rfc9113.html#name-introduction)
+[HTTP/2-rfc9113](https://www.rfc-editor.org/rfc/rfc9113.html#name-introduction)
 
-[HPACK: Header Compression for HTTP/2](https://www.rfc-editor.org/rfc/rfc7541.html)
+[HPACK: Header Compression for HTTP/2-rfc7541](https://www.rfc-editor.org/rfc/rfc7541.html)
+
+[HTTP/3维基百科](https://zh.wikipedia.org/wiki/HTTP/3)
+
+[QUIC: A UDP-Based Multiplexed and Secure Transport-rfc9000](https://www.rfc-editor.org/rfc/rfc9000.html)
+
+[QPACK: Field Compression for HTTP/3-rfc9204](https://www.rfc-editor.org/rfc/rfc9204.html)
+
+[HTML5](https://whatwg-cn.github.io/html/#toc-introduction)
+
+[WebSocket维基百科](https://zh.wikipedia.org/wiki/WebSocket)
