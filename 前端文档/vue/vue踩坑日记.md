@@ -406,7 +406,16 @@ deep只是稍微改变了一下属性选择器的位置，就可以选择到我�
 </style>
 ~~~
 
-#### 组件循环多次问题
+#### v-model的异步更新
 
+~~~ts
+const flag = defineModel("flag");
+const handleChange = ()=>{
+	console.log(flag.value); // false
+	flag.value = !flag.value;
+	console.log(flag.value); // false
+}
+~~~
 
+读者可能会觉得以上代码的结果有问题，但实际上没问题，这是`v-model`的一个小坑，通过v-model传递的值，**修改是异步的**，而`console.log`是同步的，所以在`flag.value`的值被修改之前就将原始值打印两次。
 
