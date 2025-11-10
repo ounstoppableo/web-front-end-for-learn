@@ -429,35 +429,12 @@ const handleChange = ()=>{
 
 <script setup>
 import { ref } from "vue";
-class Demo {
-  demoRefData = ref("demoData");
-  constructor() {
-    console.log("Demo类被实例化");
-  }
-  handleConsoleLogRef() {
-    console.log(this.demoRefData);
-  }
-  handleConsoleLogRefValue() {
-    console.log(this.demoRefData.value);
-  }
-}
-const demoObj = ref(new Demo());
-
-demoObj.value.handleConsoleLogRef();
-demoObj.value.handleConsoleLogRefValue();
-console.log(demoObj.value.demoRefData);
-console.log(demoObj.value.demoRefData.value);
-
-const demoObj2 = ref({
-  a: ref("demoData2"),
+const demoObj = ref({
+  demoObjRefData: ref("demoData"),
 });
 
-console.log(demoObj2.value.a);
-console.log(demoObj2.value.a.value);
-
-const toggleClass = () => {
-  demoObj.value = new Demo();
-};
+console.log(demoObj.value.demoObjRefData);
+console.log(demoObj.value.demoObjRefData.value);
 </script>
 
 <style scoped>
@@ -469,18 +446,16 @@ const toggleClass = () => {
 ~~~ts
 demoData
 undefined
-demoData
-undefined
-demoData2
-undefined
 ~~~
 
-明明demoRefData是ref数据，为什么会有这样的输出？
+明明demoRefData和a是ref数据，为什么会有这样的输出？
 
 如果是：
 
 ~~~ts
-const demoObj = reactive(new Demo());
+const demoObj = reactive({
+  demoObjRefData: ref("demoData"),
+});
 ~~~
 
 还好理解，因为在Vue的官网有定义：
