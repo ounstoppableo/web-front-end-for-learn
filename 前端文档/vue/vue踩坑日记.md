@@ -419,3 +419,99 @@ const handleChange = ()=>{
 
 读者可能会觉得以上代码的结果有问题，但实际上没问题，这是`v-model`的一个小坑，通过v-model传递的值，**修改是异步的**，而`console.log`是同步的，所以在`flag.value`的值被修改之前就将原始值打印两次。
 
+#### 响应式数据的自动解构
+
+我们来观察一个例子：
+
+~~~vue
+<template>
+</template>
+
+<script setup>
+import { ref } from "vue";
+class Demo {
+  demoRefData = ref("demoData");
+  constructor() {
+    console.log("Demo类被实例化");
+  }
+  handleConsoleLogRef() {
+    console.log(this.demoRefData);
+  }
+  handleConsoleLogRefValue() {
+    console.log(this.demoRefData.value);
+  }
+}
+const demoObj = ref(new Demo());
+
+demoObj.value.handleConsoleLogRef();
+demoObj.value.handleConsoleLogRefValue();
+console.log(demoObj.value.demoRefData);
+console.log(demoObj.value.demoRefData.value);
+
+const demoObj2 = ref({
+  a: ref("demoData2"),
+});
+
+console.log(demoObj2.value.a);
+console.log(demoObj2.value.a.value);
+
+const toggleClass = () => {
+  demoObj.value = new Demo();
+};
+</script>
+
+<style scoped>
+</style>
+~~~
+
+输出的是：
+
+~~~ts
+demoData
+undefined
+demoData
+undefined
+demoData2
+undefined
+~~~
+
+明明demoRefData是ref数据，为什么会有这样的输出？
+
+如果是：
+
+~~~ts
+const demoObj = reactive(new Demo());
+~~~
+
+还好理解，因为在Vue的官网有定义：
+
+> 作为reactive 对象的属性
+>
+> 一个 ref 会在作为响应式对象的属性被访问或修改时自动解包。换句话说，它的行为就像一个普通的属性：
+>
+> ```js
+> const count = ref(0)
+> const state = reactive({
+>   count
+> })
+> 
+> console.log(state.count) // 0
+> 
+> state.count = 1
+> console.log(count.value) // 1
+> ```
+>
+> 如果将一个新的 ref 赋值给一个关联了已有 ref 的属性，那么它会替换掉旧的 ref：
+>
+> ```js
+> const otherCount = ref(2)
+> 
+> state.count = otherCount
+> console.log(state.count) // 2
+> // 原始 ref 现在已经和 state.count 失去联系
+> console.log(count.value) // 1
+> ```
+>
+> 只有当嵌套在一个深层响应式对象内时，才会发生 ref 解包。当其作为[浅层响应式对象](https://cn.vuejs.org/api/reactivity-advanced.html#shallowreactive)的属性被访问时不会解包。
+
+但是实际上这个自动解构的特性不止在reactive里存在，ref的深层对象里的ref也会被自动解构。
